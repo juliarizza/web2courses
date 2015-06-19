@@ -1,0 +1,6 @@
+{{extend 'layout.html'}}
+
+<h1>{{=T("My Courses")}}</h1>
+{{for my_class in classes:}}
+	<a href="{{=URL('my_class', args=my_class.id)}}">{{=my_class.course.title}}</a>
+{{pass}}

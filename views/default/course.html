@@ -1,0 +1,73 @@
+{{ extend 'base_courses.html' }}
+{{block class}}right-sidebar{{end}}
+            <!-- Main -->
+                <div class="wrapper">
+                    <div class="container" id="main">
+                        <div class="row 150%">
+                            <div class="8u 12u(narrower)">
+
+                                <!-- Content -->
+                                    <article id="content">
+                                        <a href="#" class="image featured"><img src="{{=URL('download', args=course.image)}}" alt="{{=course.title}}" /></a>
+                                        <header>
+                                            <h2>{{=course.title}}</h2>
+                                        </header>
+                                        <p>
+                                            {{=course.short_description}}
+                                        </p>
+                                    </article>
+                                    <article>
+                                        {{=course.description}}
+                                    </article>
+
+                            </div>
+                            <div class="4u 12u(narrower)">
+
+                                <!-- Sidebar -->
+                                    <section id="sidebar">
+                                        <section>
+                                            <header>
+                                                <h3>{{=T('General Info')}}</h3>
+                                            </header>
+                                            <p>
+                                                <ul style="list-style: circle inside;">
+                                                    <li>{{=T('Certificate')}}</li>
+                                                    <li>{{=T('Duration')}}: {{=course.total_hours}} {{=T('hours')}}</li>
+                                                    <li>{{=T('Vacancies')}}: {{=course.max_students}} {{=T('students')}}</li>
+                                                    <li><b>{{=T('Price')}}:</b>
+                                                        {{if course.discount:}}
+                                                        <strike style="color: red;">R${{='%.2f' % course.price}}</strike> R${{='%.2f' % (course.price-course.discount)}}
+                                                        {{else:}}
+                                                        R${{='%.2f' % course.price}}
+                                                        {{pass}}
+                                                    </li>
+                                                </ul>
+                                            </p>
+                                            {{if open_classes:}}
+                                            <h3>{{=T('Open classes')}}</h3>
+                                            {{for oc in open_classes:}}
+                                            <a href="{{=URL('enroll', args=oc.id)}}">
+                                            <div class="button" style="min-width: 250px; text-align: center; margin: 15px 0; background-color: #5D6DA4; color: #fff;">
+                                                {{=T('Starting on')}}
+                                                {{=T("%s %dth") % (oc.start_date.strftime("%B"),oc.start_date.day)}}
+                                                <br>
+                                                <b style="color: #fff;">{{=T('Enroll now!')}}</b>
+                                            </div>
+                                            </a>
+                                            {{pass}}
+                                            {{else:}}
+                                            <p>{{=T('Interested? Submit your email below to be notified for the next open class.')}}</p>
+                                            {{=interest_form.custom.begin}}
+                                                {{interest_form.elements('#interests_email')[0]['_placeholder']=T('Your email')}}
+                                                {{=interest_form.custom.widget.email}}
+                                                <br>
+                                                {{=interest_form.custom.submit}}
+                                            {{=interest_form.custom.end}}
+                                            {{pass}}
+                                        </section>
+                                    </section>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>

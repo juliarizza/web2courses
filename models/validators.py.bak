@@ -1,0 +1,61 @@
+# -*- coding: utf-8 -*-
+
+## courses table
+Course.title.requires = IS_NOT_EMPTY()
+Course.price.requires = IS_NOT_EMPTY()
+Course.discount.requires = IS_NOT_EMPTY()
+Course.max_students.requires = IS_NOT_EMPTY()
+Course.total_hours.requires = IS_NOT_EMPTY()
+Course.image.requires = IS_EMPTY_OR(IS_IMAGE())
+
+## classes table
+Class.start_date.requires = IS_DATE()
+Class.end_date.requires = IS_DATE()
+Class.course.requires = IS_IN_DB(db, "courses.id", "%(title)s")
+Class.status.requires = IS_IN_SET({1: "In Progress", 2: "Closed", 3:"Open Enrollment"})
+
+## students table
+Student.student.requires = IS_IN_DB(db, "auth_user.id", "%(first_name)s %(last_name)s")
+Student.class_id.requires = IS_IN_DB(db, "classes.id", "%(course)s - %(id)d")
+Student.status.requires = IS_IN_SET({1: "Not Started", 2: "In Progress", 3: "Concluded"})
+
+## modules table
+Module.course.requires = IS_IN_DB(db, "courses.id", "%(title)s")
+
+## single lessons table
+Lesson.start_date.requires = IS_DATE()
+Lesson.lesson_module.requires = IS_IN_DB(db, "modules.id", "%(title)s")
+
+## video lessons table
+Video.lesson.requires = IS_IN_DB(db, "lessons.id", "%(title)s")
+
+## text lessons table
+Text.lesson.requires = IS_IN_DB(db, "lessons.id", "%(title)s")
+
+## exercise lessons table
+Exercise.lesson.requires = IS_IN_DB(db, "lessons.id", "%(title)s")
+
+## calendar table
+Date.marked_date.requires = IS_DATE()
+
+## forum table
+Forum.author.requires = IS_IN_DB(db, "auth_user.id", "%(first_name)s %(last_name)s")
+Forum.created_on.requires = IS_DATE()
+
+## forum comments table
+Comment.author.requires = IS_IN_DB(db, "auth_user.id", "%(first_name)s %(last_name)s")
+Comment.post.requires = IS_IN_DB(db, "forum.id", "%(title)s")
+
+## works table
+Work.author.requires = IS_IN_DB(db, "auth_user.id", "%(first_name)s %(last_name)s")
+Work.course.requires = IS_IN_DB(db, "courses.id", "%(title)s")
+
+## courses interest table
+Interest.email.requires = IS_EMAIL()
+Interest.course.requires = IS_IN_DB(db, 'courses.id', '%(title)s')
+
+def check_if_exists(form):
+    q1 = (Interest.email == form.vars.email)
+    q2 = (Interest.course == form.vars.course)
+    if db(q1&q2).count():
+        form.errors.email = T("You are already on the list for this course!")

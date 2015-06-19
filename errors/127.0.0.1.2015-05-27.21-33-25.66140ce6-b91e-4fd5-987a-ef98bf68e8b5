@@ -1,0 +1,21 @@
+(dp1
+S'output'
+p2
+S"<type 'exceptions.ValueError'> need more than 1 value to unpack"
+p3
+sS'layer'
+p4
+S'/home/julia/web2py/applications/courses_app/controllers/course.py'
+p5
+sS'code'
+p6
+S'# -*- coding: utf-8 -*-\n\n@auth.requires_login()\ndef my_courses():\n    courses = db(Student.student == auth.user.id).select()\n    return dict(courses=courses)\n\ndef courses():\n    courses = db(Course).select()\n    return dict(courses=courses)\n\ndef classes():\n    if request.vars.course:\n        classes = db(Class.course == request.vars.course).select()\n        print classes\n    else:\n        print \'sem var\'\n        classes = db(Class).select()\n    print \'sem erro\'\n    return dict(classes=classes)\n\ndef new_course():\n    form = SQLFORM(Course)\n    if form.process().accepted:\n        session.flash = "New course!"\n        redirect(URL(\'courses\'))\n    elif form.errors:\n        response.flash = "Errors in form!"\n    return dict(form=form)\n\ndef new_class():\n    form = SQLFORM(Class)\n    if form.process().accepted:\n        session.flash = "New class!"\n        redirect(URL(\'classes\', vars={\'course\':form.vars.course}))\n    elif form.errors:\n        response.flash = "Errors in form!"\n    return dict(form=form)\n\nresponse._vars=response._caller(classes)\n'
+p7
+sS'snapshot'
+p8
+(dp9
+sS'traceback'
+p10
+S'Traceback (most recent call last):\n  File "/home/julia/web2py/gluon/restricted.py", line 227, in restricted\n    exec ccode in environment\n  File "/home/julia/web2py/applications/courses_app/controllers/course.py", line 40, in <module>\n  File "/home/julia/web2py/gluon/globals.py", line 393, in <lambda>\n    self._caller = lambda f: f()\n  File "/home/julia/web2py/applications/courses_app/controllers/course.py", line 14, in classes\n    classes = db(Class.course == request.vars.course).select()\n  File "/home/julia/web2py/gluon/packages/dal/pydal/objects.py", line 2026, in select\n    return adapter.select(self.query,fields,attributes)\n  File "/home/julia/web2py/gluon/packages/dal/pydal/adapters/sqlite.py", line 125, in select\n    return super(SQLiteAdapter, self).select(query, fields, attributes)\n  File "/home/julia/web2py/gluon/packages/dal/pydal/adapters/base.py", line 1239, in select\n    return self._select_aux(sql,fields,attributes)\n  File "/home/julia/web2py/gluon/packages/dal/pydal/adapters/base.py", line 1204, in _select_aux\n    self.execute(sql)\n  File "/home/julia/web2py/gluon/packages/dal/pydal/adapters/base.py", line 1326, in execute\n    return self.log_execute(*a, **b)\n  File "/home/julia/web2py/gluon/packages/dal/pydal/adapters/base.py", line 1320, in log_execute\n    ret = self.cursor.execute(command, *a[1:], **b)\n  File "/usr/lib/python2.7/dist-packages/pysqlite2/dbapi2.py", line 66, in convert_timestamp\n    datepart, timepart = val.split(" ")\nValueError: need more than 1 value to unpack\n'
+p11
+s.

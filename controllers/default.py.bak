@@ -1,0 +1,127 @@
+# -*- coding: utf-8 -*-
+# this file is released under public domain and you can use without limitations
+
+#########################################################################
+## This is a sample controller
+## - index is the default action of any application
+## - user is required for authentication and authorization
+## - download is for downloading files uploaded in the db (does streaming)
+#########################################################################
+
+def index():
+    """
+    example action using the internationalization operator T and flash
+    rendered by views/default/index.html or views/generic.html
+
+    if you need a simple wiki simply replace the two lines below with:
+    return auth.wiki()
+    """
+    response.flash = T("Hello World")
+    return dict(message=T('Welcome to web2py!'))
+
+
+def user():
+    """
+    exposes:
+    http://..../[app]/default/user/login
+    http://..../[app]/default/user/logout
+    http://..../[app]/default/user/register
+    http://..../[app]/default/user/profile
+    http://..../[app]/default/user/retrieve_password
+    http://..../[app]/default/user/change_password
+    http://..../[app]/default/user/manage_users (requires membership in
+    use @auth.requires_login()
+        @auth.requires_membership('group name')
+        @auth.requires_permission('read','table name',record_id)
+    to decorate functions that need access control
+    """
+    return dict(form=auth())
+
+
+@cache.action()
+def download():
+    """
+    allows downloading of uploaded files
+    http://..../[app]/default/download/[filename]
+    """
+    return response.download(request, db)
+
+
+def call():
+    """
+    exposes services. for example:
+    http://..../[app]/default/call/jsonrpc
+    decorate with @services.jsonrpc the functions to expose
+    supports xml, json, xmlrpc, jsonrpc, amfrpc, rss, csv
+    """
+    return service()
+
+##################################################################################
+####                                                                          ####
+####                               COURSE PAGES                               ####
+####                                                                          ####
+##################################################################################
+
+def courses():
+    courses = db(Course).select()
+    return dict(courses=courses)
+
+def course():
+    course_id = int(request.args(0))
+    course = db(Course.id == course_id).select().first()
+    open_classes = course.classes(Class.status == 3).select()
+    
+    Interest.course.default = course_id
+    Interest.course.readable = Interest.course.writable = False
+    interest_form = SQLFORM(Interest)
+    if interest_form.process(onvalidation=check_if_exists).accepted:
+        response.flash = T("Thank you!")
+    elif interest_form.errors:
+        response.flash = T("Erros no formulário!")
+        
+    return dict(
+        course=course,
+        open_classes=open_classes,
+        interest_form=interest_form)
+
+@auth.requires_login()
+def enroll():
+    class_id = int(request.args(0))
+    if not class_id:
+        session.flash = T("No class selected!")
+        redirect(URL('courses'))
+        
+    Student.insert(student=auth.user.id, class_id=class_id, status=1)
+    session.flash = T("Congrats! You're enrolled on a new course!") 
+    redirect(URL('my_courses'))
+
+@auth.requires_login()
+def my_courses():
+    class_ids = db(Student.student == auth.user.id).select()
+    classes = db(Class.id.belongs([x.class_id for x in class_ids])).select()
+    return dict(classes=classes)
+
+def classes():
+    if request.vars.course:
+        classes = db(Class.course == request.vars.course).select(Class.course, Class.status)
+    else:
+        classes = db(Class).select(Class.course, Class.status)
+    return dict(classes=classes)
+
+def new_course():
+    form = SQLFORM(Course)
+    if form.process().accepted:
+        session.flash = "New course!"
+        redirect(URL('courses'))
+    elif form.errors:
+        response.flash = "Errors in form!"
+    return dict(form=form)
+
+def new_class():
+    form = SQLFORM(Class)
+    if form.process().accepted:
+        session.flash = "New class!"
+        redirect(URL('classes', vars={'course':form.vars.course}))
+    elif form.errors:
+        response.flash = "Errors in form!"
+    return dict(form=form)

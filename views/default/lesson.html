@@ -1,0 +1,60 @@
+{{extend 'layout.html'}}
+
+<h1>{{=lesson.title}}</h1>
+{{for content in contents:}}
+<div class="panel panel-default">
+  <div class="panel-body">
+  {{if content.lesson_type == 1:}}
+  	{{if content.video_url:}}
+  	<center>
+  		<iframe width="853" height="480" src="{{=content.video_url}}?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>
+  	</center>
+  	{{elif content.video_upload:}}
+  	<center>
+  	 <video width="853" height="480" controls>
+	  <source src="{{=URL('download', args=content.video_upload)}}">
+	  {{=T('Your browser does not support the video tag.')}}
+	</video>
+	</center> 
+  	{{else:}}
+  	<p><strong>{{=T("There was a problem with this video!")}}</strong></p>
+  	<p>{{=T("We couldn't find any video here. Please, alert your instructor about this problem!")}}</p>
+  	{{pass}}
+  {{elif content.lesson_type == 2:}}
+  <p>{{=content.body}}</p>
+  {{elif content.lesson_type == 3:}}
+  <p>{{=content.question}}</p>
+  <form name="q_{{=content.id}}" method="post">
+	<div class="radio">
+	  <label>
+	    <input type="radio" name="q_{{=content.id}}" value="1" />{{=content.alternative_a}}
+	  </label>
+	</div>
+	<div class="radio">
+	  <label>
+	    <input type="radio" name="q_{{=content.id}}" value="2" />{{=content.alternative_b}}
+	  </label>
+	</div>
+	<div class="radio">
+	  <label>
+	    <input type="radio" name="q_{{=content.id}}" value="3" />{{=content.alternative_c}}
+	  </label>
+	</div>
+	<div class="radio">
+	  <label>
+	    <input type="radio" name="q_{{=content.id}}" value="4" />{{=content.alternative_d}}
+	  </label>
+	</div>
+	<input type="submit" value="{{=T('Submit')}}" />
+  </form>
+  	{{if "q_%s"%content.id in is_correct.keys():}}
+  		{{if is_correct["q_%s" % content.id]:}}
+  			<strong>Acertou!</strong>
+  		{{else:}}
+  			<strong>Errou!</strong>
+  		{{pass}}
+  	{{pass}}
+  {{pass}}
+  </div>
+</div>
+{{pass}}

@@ -1,0 +1,104 @@
+# -*- coding: utf-8 -*-
+
+## courses table
+Course = db.define_table("courses",
+               Field("title"),
+               Field("short_description", "text"),
+               Field("description", "text"),
+               Field("price", "float", default=0),
+               Field("discount", "float", default=0),
+               Field("max_students", "integer", default=0),
+               Field("total_hours", "integer", default=10),
+               Field("image", "upload")
+              )
+
+## classes table
+Class = db.define_table("classes",
+                        Field("course", "reference courses"),
+                        Field("start_date", "date"),
+                        Field("end_date", "date"),
+                        Field("status")
+                       )
+
+## students table
+Student = db.define_table("students",
+                Field("student", "reference auth_user"),
+                Field("class_id", "reference classes"),
+                Field("status")
+               )
+
+## modules table
+Module = db.define_table("modules",
+               Field("title"),
+               Field("description", "text"),
+               Field("place", "integer"),
+               Field("course", "reference courses")
+              )
+
+## single lesson table
+Lesson = db.define_table("lessons",
+                Field("lesson_module", "reference modules"),
+                Field("place", "integer"),
+                Field("start_date", "date")
+               )
+
+## video lesson table
+Video = db.define_table("videos",
+              Field("title"),
+              Field("video_url"),
+              Field("video_upload", "upload"),
+              Field("lesson", "reference lessons")
+             )
+
+## text lesson table
+Text = db.define_table("texts",
+             Field("title"),
+             Field("body", "text"),
+             Field("lesson", "reference lessons"),
+            )
+
+## exercise lesson table
+Exercise = db.define_table("exercises",
+                 Field("title"),
+                 Field("question", "text"),
+                 Field("alternative_a"),
+                 Field("alternative_b"),
+                 Field("alternative_c"),
+                 Field("alternative_d"),
+                 Field("lesson", "reference lessons")
+                )
+
+## calendar table
+Date = db.define_table("dates",
+             Field("title"),
+             Field("marked_date", "date")
+            )
+
+## forum table
+Forum = db.define_table("forum",
+              Field("title"),
+              Field("body", "text"),
+              Field("author", "reference auth_user"),
+              Field("created_on", "date")
+             )
+
+## forum comments table
+Comment = db.define_table("comments",
+                Field("body", "text"),
+                Field("author", "reference auth_user"),
+                Field("post", "reference forum")
+               )
+
+## works table
+Work = db.define_table("works",
+             Field("body", "text"),
+             Field("work_file", "upload"),
+             Field("author", "reference auth_user"),
+             Field("course", "reference courses")
+            )
+
+## Course interest table
+Interest = db.define_table("interests",
+             Field("email"),
+             Field("course", "reference courses")
+             )

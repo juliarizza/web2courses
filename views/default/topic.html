@@ -1,0 +1,31 @@
+{{extend 'layout.html'}}
+<h1>{{=T('Forum')}}</h1>
+<a href="{{=URL('forum', args=topic.class_id)}}">Voltar</a>
+<br><br>
+
+<div class="panel panel-default">
+  <div class="panel-body">
+    <h2>{{=topic.title}} <small>por {{=topic.author.first_name}} {{=topic.author.last_name}}</small></h2>
+    <p>{{=topic.body}}</p>
+  </div>
+</div>
+
+<h2>{{=T("Replies")}} <span class="badge">{{=len(comments)}}</span></h2>
+{{for comment in comments:}}
+<div class="media">
+  <div class="media-left">
+      <img class="media-object" src="{{=URL('download', args=comment.author.avatar)}}" alt="{{=T('User avatar')}}" height="64" width="64">
+  </div>
+  <div class="media-body">
+    <h4 class="media-heading">{{=comment.author.first_name}} {{=comment.author.last_name}} {{=T('said')}}:</h4>
+    <p>{{=comment.body}}</p>
+  </div>
+</div>
+{{pass}}
+<br>
+<div class="panel panel-default">
+  <div class="panel-body">
+  	<h3>{{=T("Reply this user")}}</h3>
+  	{{=form}}
+  </div>
+</div>
