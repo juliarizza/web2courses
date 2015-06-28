@@ -1,0 +1,95 @@
+{{extend 'layout.html'}}
+
+<div class="row">
+<div>
+	<h1>{{=modules[0].class_id.course.title}} <br><small>from {{=modules[0].class_id.start_date}} to {{=modules[0].class_id.end_date}}</small></h1>
+	<h2>{{=T('Modules')}}</h2>
+</div>
+<div>
+<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+{{for module in modules:}}
+  <div class="panel panel-default">
+    <div class="panel-heading" role="tab" id="heading{{=module.id}}">
+      <h4 class="panel-title">
+        <a role="button" data-toggle="collapse" data-parent="#accordion" href="#module{{=module.id}}" aria-expanded="false" aria-controls="module{{=module.id}}">
+          {{=module.title}}
+          <div class="pull-right">
+		    	<a href="{{=URL('edit', args=[2, module.id], vars={'next':URL('lessons', args=module.class_id)})}}"><i class="glyphicon glyphicon-pencil"></i></a>
+		    	<a href="{{=URL('delete', args=[2, module.id], vars={'next':URL('lessons', args=module.class_id)})}}"><i class="glyphicon glyphicon-trash"></i></a>
+		   </div>
+        </a>
+      </h4>
+    </div>
+    <div id="module{{=module.id}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading{{=module.id}}">
+      <div class="panel-body">
+      <p>{{=module.description}}</p>
+    	<div class="panel-group" id="lessons_{{=module.id}}" role="tablist" aria=multiselectable="true">
+    		{{for lesson in module.lessons.select(orderby=Lesson.place):}}
+    			<div class="panel panel-default">
+    				<div class="panel-heading" role="tab" id="lessonHeading{{=lesson.id}}">
+    					<h4 class="panel-title">
+    						<a role="button" data-toggle="collapse" data-parent="lessons_{{=module.id}}" href="#lesson{{=lesson.id}}" aria-expanded="false" aria-controls="lesson{{=lesson.id}}">
+    							{{=lesson.title}}
+    							<div class="pull-right">
+							    	<a href="{{=URL('edit', args=[3, lesson.id], vars={'next':URL('lessons', args=module.class_id)})}}"><i class="glyphicon glyphicon-pencil"></i></a>
+							    	<a href="{{=URL('delete', args=[3, lesson.id], vars={'next':URL('lessons', args=module.class_id)})}}"><i class="glyphicon glyphicon-trash"></i></a>
+								</div>
+    						</a>
+    					</h4>
+    				</div>
+    				<div id="lesson{{=lesson.id}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="lessonHeading{{=lesson.id}}">
+    					<div class="panel-body">
+    						{{for content in all_lessons.get("m%d_l%d" % (module.id, lesson.id)):}}
+    							<div class="panel panel-default">
+								  <div class="panel-body">
+								    {{if content.lesson_type == 1:}}
+								    <i class="glyphicon glyphicon-facetime-video"></i>
+								    	{{if content.video_url:}}
+								    		{{=content.video_url}}
+								    	{{else:}}
+								    		<a href="{{=URL('default', 'download', args=content.video_upload)}}">{{=T("Video file")}}</a>
+								    	{{pass}}
+								    <div class="pull-right">
+								    	<a href="{{=URL('edit', args=[4, content.id], vars={'next':URL('lessons', args=module.class_id)})}}"><i class="glyphicon glyphicon-pencil"></i></a>
+								    	<a href="{{=URL('delete', args=[4, content.id], vars={'next':URL('lessons', args=module.class_id)})}}"><i class="glyphicon glyphicon-trash"></i></a>
+								    </div>
+								    {{elif content.lesson_type == 2:}}
+								    <i class="glyphicon glyphicon-book"></i>
+								    {{=content.body[:141]}}...
+								    <div class="pull-right">
+								    	<a href="{{=URL('edit', args=[5, content.id], vars={'next':URL('lessons', args=module.class_id)})}}"><i class="glyphicon glyphicon-pencil"></i></a>
+								    	<a href="{{=URL('delete', args=[5, content.id], vars={'next':URL('lessons', args=module.class_id)})}}"><i class="glyphicon glyphicon-trash"></i></a>
+								    </div>
+								    {{elif content.lesson_type == 3:}}
+								    <i class="glyphicon glyphicon-check"></i>
+								    {{=content.question[:141]}}...
+								    <div class="pull-right">
+								    	<a href="{{=URL('edit', args=[6, content.id], vars={'next':URL('lessons', args=module.class_id)})}}"><i class="glyphicon glyphicon-pencil"></i></a>
+								    	<a href="{{=URL('delete', args=[6, content.id], vars={'next':URL('lessons', args=module.class_id)})}}"><i class="glyphicon glyphicon-trash"></i></a>
+								    </div>
+								    {{pass}}
+								  </div>
+								</div>
+    						{{pass}}
+    					<div class="pull-right">
+    						<a href="{{=URL('pick_type', args=lesson.id, vars={'next': URL('lessons', args=modules[0].class_id)})}}"><button type="button" class="btn btn-primary btn-sm btn-success">{{=T("Add more")}}</button></a>
+    					</div>
+    					</div>
+    				</div>
+    			</div>
+    		{{pass}}
+    	</div>
+	    <div class="pull-right">
+			<a href="{{=URL('new', args=[3, module.id], vars={'next': URL('lessons', args=module.class_id)})}}"><button type="button" class="btn btn-primary btn-info">{{=T("New lesson")}}</button></a>
+		</div>
+      </div>
+    </div>
+  </div>
+ {{pass}}
+</div>
+
+<div class="pull-right">
+	<a href="{{=URL('new', args=[2, modules[0].class_id], vars={'next': URL('lessons', args=modules[0].class_id)})}}"><button type="button" class="btn btn-primary btn-lg">{{=T("New module")}}</button></a>
+</div>
+</div>
+</div>

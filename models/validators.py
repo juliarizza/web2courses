@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-class_status = {1: "In Progress", 2: "Closed", 3:"Open Enrollment"}
+class_status = {1: T("In Progress"), 2: T("Closed"), 3: T("Open Enrollment")}
 
 
 ## courses table
@@ -23,21 +23,34 @@ Student.class_id.requires = IS_IN_DB(db, "classes.id", "%(course)s - %(id)d")
 
 ## modules table
 Module.class_id.requires = IS_IN_DB(db, "classes.id", "%(course)s - %(start_date)s")
+Module.class_id.writable = Module.class_id.readable = False
+Module.place.writable = Module.place.readable = False
 
 ## single lessons table
 Lesson.title.requires = IS_NOT_EMPTY()
 Lesson.start_date.requires = IS_DATE()
 Lesson.lesson_module.requires = IS_IN_DB(db, "modules.id", "%(title)s")
+Lesson.lesson_module.writable = Lesson.lesson_module.readable = False
+Lesson.place.writable = Lesson.place.readable = False
 
 ## video lessons table
 Video.lesson.requires = IS_IN_DB(db, "lessons.id", "%(title)s")
+Video.lesson_type.writable = Video.lesson_type.readable = False
+Video.place.writable = Video.place.readable = False
+Video.lesson.writable = Video.lesson.readable = False
 
 ## text lessons table
 Text.lesson.requires = IS_IN_DB(db, "lessons.id", "%(title)s")
+Text.lesson_type.writable = Text.lesson_type.readable = False
+Text.place.writable = Text.place.readable = False
+Text.lesson.writable = Text.lesson.readable = False
 
 ## exercise lessons table
 Exercise.lesson.requires = IS_IN_DB(db, "lessons.id", "%(title)s")
 Exercise.correct.requires = IS_IN_SET({1:"A",2:"B",3:"C",4:"D"})
+Exercise.lesson_type.writable = Exercise.lesson_type.readable = False
+Exercise.place.writable = Exercise.place.readable = False
+Exercise.lesson.writable = Exercise.lesson.readable = False
 
 ## track lessons table
 Track.user_id.requires = IS_IN_DB(db, "auth_user.id", "%(first_name)s %(last_name)s")

@@ -1,0 +1,43 @@
+{{extend 'layout.html'}}
+
+<div class="row">
+<div class="col-md-9 col-sm-12">
+	<h1>{{=T('Courses')}}</h1>
+</div>
+<div class="col-md-3 col-sm-12">
+	<a href="{{=URL('new', args=0, vars={'next': URL('courses')})}}"><button type="button" class="btn btn-primary" style="margin: 1em 0; float: right;">{{=T('New Course')}}</button></a>
+	<a href="{{=URL('classes')}}"><button type="button" class="btn btn-info" style="margin: 1em 3px; float: right;">{{=T('All Classes')}}</button></a>
+</div>
+<div class="col-md-12 col-sm-12">
+	<table class="table table-bordered">
+		<thead>
+			<tr>
+				<th>{{=T('Course')}}</th>
+				<th>{{=T('Description')}}</th>
+				<th>{{=T('Price')}}</th>
+				<th>{{=T('Discount')}}</th>
+				<th>{{=T('Max. Students')}}</th>
+				<th>{{=T('Total Hours')}}</th>
+				<th>{{=T('Actions')}}</th>
+			</tr>
+		</thead>
+		<tbody>
+			{{for course in courses:}}
+			<tr>
+				<td><a href="{{=URL('edit', args=[0,course.id], vars={'next':URL('courses')})}}">{{=course.title}}</a></td>
+				<td>{{=course.short_description[:81]}}...</td>
+				<td>${{="%.2f" % course.price}}</td>
+				<td>${{="%.2f" % course.discount}}</td>
+				<td>{{=course.max_students}}</td>
+				<td>{{=course.total_hours}}</td>
+				<td>
+					<a href="{{=URL('classes', vars={'course': course.id})}}"></a><i class="glyphicon glyphicon-list-alt"></i>
+					<a href="{{=URL('edit', args=[0, course.id], vars={'next':URL('courses')})}}"><i class="glyphicon glyphicon-pencil"></i></a>
+					<a href="{{=URL('delete', args=[0, course.id], vars={'next':URL('courses')})}}"><i class="glyphicon glyphicon-trash"></i></a>
+				</td>
+			</tr>
+			{{pass}}
+		</tbody>
+	</table>
+</div>
+</div>

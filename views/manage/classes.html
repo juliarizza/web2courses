@@ -1,0 +1,44 @@
+{{extend 'layout.html'}}
+
+<div class="row">
+<div class="col-md-9 col-sm-12">
+	<h1>{{=T('Classes')}}</h1>
+	{{if request.vars.course:}}<h4>{{=db(Course.id==int(request.vars.course)).select().first().title}}</h4>{{pass}}
+</div>
+<div class="col-md-3 col-sm-12">
+	<a href="{{=URL('new', args=1, vars={'next': URL('classes')})}}"><button type="button" class="btn btn-primary" style="margin: 1em 0; float: right;">{{=T('New Class')}}</button></a>
+</div>
+<div class="col-md-12 col-sm-12">
+	<table class="table table-bordered">
+		<thead>
+			<tr>
+				{{if not request.vars.course:}}
+				<th>{{=T('Course')}}</th>
+				{{pass}}
+				<th>{{=T('Start Date')}}</th>
+				<th>{{=T('End Date')}}</th>
+				<th>{{=T('Status')}}</th>
+				<th>{{=T('Actions')}}</th>
+			</tr>
+		</thead>
+		<tbody>
+			{{for class_ in classes:}}
+			<tr>
+				{{if not request.vars.course:}}
+				<td>{{=class_.course.title}}</td>
+				{{pass}}
+				<td>{{=class_.start_date}}</td>
+				<td>{{=class_.end_date}}</td>
+				<td>{{=class_status.get(int(class_.status))}}</td>
+				<td>
+					<a href="{{=URL('default', 'my_class', args=class_.id)}}"><i class="glyphicon glyphicon-eye-open"></i></a>
+					<a href="{{=URL('lessons', args=class_.id)}}"><i class="glyphicon glyphicon-education"></i></a>
+					<a href="{{=URL('edit', args=[1, class_.id], vars={'next':URL('classes')})}}"><i class="glyphicon glyphicon-pencil"></i></a>
+					<a href="{{=URL('delete', args=[1, class_.id], vars={'next':URL('classes')})}}"><i class="glyphicon glyphicon-trash"></i></a>
+				</td>
+			</tr>
+			{{pass}}
+		</tbody>
+	</table>
+</div>
+</div>
