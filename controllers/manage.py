@@ -25,7 +25,7 @@ def lessons():
     import itertools
 
     try:
-        class_id = int(request.args(0))
+        class_id = request.args(0,cast=int)
     except:
         redirect(URL('default', 'index'))
 
@@ -64,44 +64,44 @@ def pick_type():
 @auth.requires_login()
 def new():
     tables = [Course, Class, Module, Lesson, Video, Text, Exercise]
-    table_type = int(request.args(0))
+    table_type = request.args(0,cast=int)
 
     if table_type == 2:
-        Module.class_id.default = int(request.args(1))
-        Module.place.default = db(Module.class_id == int(request.args(1))).count()
+        Module.class_id.default = request.args(1,cast=int)
+        Module.place.default = db(Module.class_id == request.args(1,cast=int)).count()
     elif table_type == 3:
-        Lesson.lesson_module.default = int(request.args(1))
-        Lesson.place.default = db(Lesson.lesson_module == int(request.args(1))).count()
+        Lesson.lesson_module.default = request.args(1,cast=int)
+        Lesson.place.default = db(Lesson.lesson_module == request.args(1,cast=int)).count()
     elif table_type in [4, 5, 6]:
-        lesson = db(Lesson.id == int(request.args(1))).select().first()
+        lesson = db(Lesson.id == request.args(1,cast=int)).select().first()
         counter = lesson.videos.count() + lesson.texts.count() + lesson.exercises.count()
         if table_type == 4:
             Video.place.default = counter
-            Video.lesson.default = int(request.args(1))
+            Video.lesson.default = request.args(1,cast=int)
         elif table_type == 5:
             Text.place.default = counter
-            Text.lesson.default = int(request.args(1))
+            Text.lesson.default = request.args(1,cast=int)
         elif table_type == 6:
             Exercise.place.default = counter
-            Exercise.lesson.default = int(request.args(1))
+            Exercise.lesson.default = request.args(1,cast=int)
 
-    form = crud.create(tables[table_type], next=request.vars.next)
+    form = SQLFORM(tables[table_type]).process(next=request.vars.next)
     return dict(form=form)
 
 @auth.requires_login()
 def edit():
     tables = [Course, Class, Module, Lesson, Video, Text, Exercise]
-    table_type = int(request.args(0))
-    record_id = int(request.args(1))
+    table_type = request.args(0,cast=int)
+    record_id = request.args(1,cast=int)
 
-    form = crud.update(tables[table_type], record_id, next=request.vars.next)
+    form = SQLFORM(tables[table_type], record_id).process(next=request.vars.next)
     return dict(form=form)
 
 @auth.requires_login()
 def delete():
     tables = [Course, Class, Module, Lesson, Video, Text, Exercise]
-    table_type = int(request.args(0))
-    record_id = int(request.args(1))
-
-    crud.delete(tables[table_type], record_id, next=request.vars.next)
+    table_type = request.args(0,cast=int)
+    record_id = request.args(1,cast=int)
+    db(tables[table_type]==record_id).delete()
+    redirect(request.vars.next)
 
