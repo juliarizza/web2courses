@@ -102,7 +102,7 @@ def my_courses():
     classes = db(Class.id.belongs([x.class_id for x in class_ids])).select()
     return dict(classes=classes)
 
-@auth.requires_login()
+@auth.requires(lambda: enrolled_in_class(record_id=int(request.args(0)), record_type=1))
 def my_class():
     try:
         class_id = int(request.args(0))
@@ -113,18 +113,7 @@ def my_class():
     return dict(my_class=my_class, 
                 modules=modules)
 
-@auth.requires_login()
-def module():
-    try:
-        mod_id = int(request.args(0))
-    except:
-        redirect(URL('index'))
-    module = db(Module.id == mod_id).select().first()
-    lessons = db(Lesson.lesson_module == module.id).select(orderby=Lesson.place)
-    return dict(module=module,
-                lessons=lessons)
-
-@auth.requires_login()
+@auth.requires(lambda: enrolled_in_class(record_id=int(request.args(0)), record_type=2))
 def lesson():
     try:
         lesson_id = int(request.args(0))

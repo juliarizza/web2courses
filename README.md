@@ -19,9 +19,9 @@ A manager system for a teacher to sell/provide courses and manage classes.
 
 ## Install
 1. Download web2py: [http://web2py.com](http://web2py.com)
-2. Clone this repository inside web2py applications folder ```git clone https://github.com/juliarizza/web2courses.git```
-3. Run web2py ```python web2py.py```
-4. Access /web2courses
+2. Clone this repository inside web2py applications folder: `git clone https://github.com/juliarizza/web2courses.git`
+3. Run web2py: `python web2py.py`
+4. Access `/web2courses`
 
 ### Contribute!
 Copyright (c) 2015 Júlia Rizza & licensed under The MIT License (MIT)

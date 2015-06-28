@@ -1,16 +1,57 @@
 {{extend 'layout.html'}}
 
+<div class="row">
+
+<div class="col-md-12 col-sm-12">
 <h1>{{=my_class.course.title}}</h1>
+	<div class="btn-group btn-group-lg" role="group">
+		<a href="{{=URL('my_class', args=my_class.id)}}"><button type="button" class="btn btn-default">{{=T('Modules')}}</button></a>
+	  	<a href="{{=URL('forum', args=my_class.id)}}"><button type="button" class="btn btn-default">{{=T('Forum')}}</button></a>
+	  	<a href="{{=URL('calendar', args=my_class.id)}}"><button type="button" class="btn btn-default">{{=T('Calendar')}}</button></a>
+	</div>
+</div>
 
-<ul>
-	<li><a href="#">{{=T("Modules")}}</a></li>
-	<li><a href="{{=URL('forum', args=my_class.id)}}">{{=T("Forum")}}</a></li>
-	<li><a href="{{=URL('calendar', args=my_class.id)}}">{{=T("Calendar")}}</a></li>
-</ul>
-
+<div class="col-md-8 col-sm-12">
 <h2>{{=T("Modules")}}</h2>
-<ul>
-{{for module in modules:}}
-	<li><a href="{{=URL('module', args=module.id)}}">{{=module.title}}</a></li>
-{{pass}}
-</ul>
+	<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+	{{for module in modules:}}
+	  <div class="panel panel-default">
+	    <div class="panel-heading" role="tab" id="heading{{=module.id}}">
+	      <h4 class="panel-title">
+	        <a role="button" data-toggle="collapse" data-parent="#accordion" href="#module{{=module.id}}" aria-expanded="false" aria-controls="module{{=module.id}}">
+	          {{=module.title}}
+	        <div class="pull-right">
+				<i class="glyphicon glyphicon-menu-down"></i>
+			</div>
+	        </a>
+	      </h4>
+	    </div>
+	    <div id="module{{=module.id}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading{{=module.id}}">
+	      <div class="panel-body">
+	      <p>{{=module.description}}</p>
+	    	<div class="panel-group" id="lessons_{{=module.id}}" role="tablist" aria=multiselectable="true">
+	    		{{for lesson in module.lessons.select(orderby=Lesson.place):}}
+	    			<div class="panel panel-default">
+	    				<div class="panel-heading" role="tab" id="lessonHeading{{=lesson.id}}">
+	    					<h4 class="panel-title">
+	    						<a href="{{=URL('lesson', args=lesson.id)}}">
+	    							{{=lesson.title}}
+	    						<div class="pull-right">
+	    							<i class="glyphicon glyphicon-menu-right"></i><i class="glyphicon glyphicon-menu-right"></i>
+	    						</div>
+	    						</a>
+	    					</h4>
+	    				</div>
+	    				<div id="lesson{{=lesson.id}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="lessonHeading{{=lesson.id}}">	
+	    				</div>
+	    			</div>
+	    		{{pass}}
+	    	</div>
+	      </div>
+	    </div>
+	  </div>
+	 {{pass}}
+	</div>
+</div>
+
+</div>
