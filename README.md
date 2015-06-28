@@ -1,6 +1,9 @@
 # web2courses
 A manager system for a teacher to sell/provide courses and manage classes.
 
+**Live demo:** [http://juliarizza.pythonanywhere.com/web2courses](http://juliarizza.pythonanywhere.com/web2courses)
+**username/email:** admin@admin.com **password:** admin
+
 ## Features
 * Let teachers provide online courses
 * Lessons with 3 diferent types of content: video, text and questions
@@ -8,7 +11,7 @@ A manager system for a teacher to sell/provide courses and manage classes.
 * Calendar for each class
 
 ## TODOs
-* Configure authorization system with 2 main user categories: student and teacher
+* Configure authorization system with 2 main user categories: student and teacher **DONE**
 * Integrate with payment systems (paypal, PagSeguro, etc)
 * Track students completion of courses
 * Make a .pdf certificate generator
