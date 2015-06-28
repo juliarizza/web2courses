@@ -1,6 +1,16 @@
 {{extend 'layout.html'}}
 
+<div class="row">
+
+<div class="col-md-12 col-sm-12">
 <h1>{{=lesson.title}}</h1>
+<div class="btn-group btn-group-lg" role="group">
+    <a href="{{=URL('my_class', args=contents[0].lesson.lesson_module.class_id)}}"><button type="button" class="btn btn-default">{{=T('Modules')}}</button></a>
+    <a href="{{=URL('forum', args=contents[0].lesson.lesson_module.class_id)}}"><button type="button" class="btn btn-default">{{=T('Forum')}}</button></a>
+    <a href="{{=URL('calendar', args=contents[0].lesson.lesson_module.class_id)}}"><button type="button" class="btn btn-default">{{=T('Calendar')}}</button></a>
+</div>
+<br><br>
+
 {{for content in contents:}}
 <div class="panel panel-default">
   <div class="panel-body">
@@ -58,3 +68,6 @@
   </div>
 </div>
 {{pass}}
+</div>
+
+</div>

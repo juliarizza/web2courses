@@ -10,6 +10,7 @@ Course.discount.requires = IS_NOT_EMPTY()
 Course.max_students.requires = IS_NOT_EMPTY()
 Course.total_hours.requires = IS_NOT_EMPTY()
 Course.image.requires = IS_EMPTY_OR(IS_IMAGE())
+Course.course_owner.requires = IS_IN_DB(db, 'auth_user.id', "%(email)s")
 
 ## classes table
 Class.start_date.requires = IS_DATE()

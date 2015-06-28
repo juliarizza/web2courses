@@ -533,6 +533,16 @@ table.fc-border-separate {
   }
 </style>
 {{end}}
+
+<div class="row">
+<br><br>
+<div class="btn-group btn-group-lg" role="group">
+    <a href="{{=URL('my_class', args=my_class.id)}}"><button type="button" class="btn btn-default">{{=T('Modules')}}</button></a>
+    <a href="{{=URL('forum', args=my_class.id)}}"><button type="button" class="btn btn-default">{{=T('Forum')}}</button></a>
+    <a href="{{=URL('calendar', args=my_class.id)}}"><button type="button" class="btn btn-default">{{=T('Calendar')}}</button></a>
+</div>
+</div>
+
 <div class="container">
     <hr>
   <div id="calendar"></div>

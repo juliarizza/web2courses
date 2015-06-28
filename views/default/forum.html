@@ -1,8 +1,15 @@
 {{extend 'layout.html'}}
 <h1>{{=T('Forum')}}</h1>
+<div class="btn-group btn-group-lg" role="group">
+	<a href="{{=URL('my_class', args=class_id)}}"><button type="button" class="btn btn-default">{{=T('Modules')}}</button></a>
+  	<a href="{{=URL('forum', args=class_id)}}"><button type="button" class="btn btn-default">{{=T('Forum')}}</button></a>
+  	<a href="{{=URL('calendar', args=class_id)}}"><button type="button" class="btn btn-default">{{=T('Calendar')}}</button></a>
+</div>
+<div class="pull-right">
 <a href="{{=URL('new_topic', args=request.args(0))}}"><button class="btn btn-primary">{{=T("New topic")}}</button></a>
-<br><br>
+</div>
 
+<br><br>
 {{for topic in topics:}}
 <div class="panel panel-default">
   <div class="panel-body">

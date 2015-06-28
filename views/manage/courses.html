@@ -31,7 +31,7 @@
 				<td>{{=course.max_students}}</td>
 				<td>{{=course.total_hours}}</td>
 				<td>
-					<a href="{{=URL('classes', vars={'course': course.id})}}"></a><i class="glyphicon glyphicon-list-alt"></i>
+					<a href="{{=URL('classes', vars={'course': course.id})}}"><i class="glyphicon glyphicon-list-alt"></i></a>
 					<a href="{{=URL('edit', args=[0, course.id], vars={'next':URL('courses')})}}"><i class="glyphicon glyphicon-pencil"></i></a>
 					<a href="{{=URL('delete', args=[0, course.id], vars={'next':URL('courses')})}}"><i class="glyphicon glyphicon-trash"></i></a>
 				</td>

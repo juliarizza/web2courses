@@ -10,7 +10,7 @@
 import itertools
 
 def index():
-    redirect(URL('manage','classes'))
+    return dict()
 
 
 def user():
@@ -60,7 +60,7 @@ def courses():
     return dict(courses=courses)
 
 def course():
-    course_id = int(request.args(0))
+    course_id = request.args(0, cast=int)
     course = db(Course.id == course_id).select().first()
     open_classes = course.classes(Class.status == 3).select()
     
@@ -79,7 +79,7 @@ def course():
 
 @auth.requires_login()
 def enroll():
-    class_id = int(request.args(0))
+    class_id = request.args(0, cast=int)
     if not class_id:
         session.flash = T("No class selected!")
         redirect(URL('courses'))
@@ -94,10 +94,10 @@ def my_courses():
     classes = db(Class.id.belongs([x.class_id for x in class_ids])).select()
     return dict(classes=classes)
 
-@auth.requires(lambda: enrolled_in_class(record_id=int(request.args(0)), record_type=1))
+@auth.requires(lambda: enrolled_in_class(record_id=request.args(0, cast=int), record_type=1))
 def my_class():
     try:
-        class_id = int(request.args(0))
+        class_id = request.args(0, cast=int)
     except:
         redirect(URL('index'))
     my_class = db(Class.id == class_id).select().first()
@@ -105,10 +105,10 @@ def my_class():
     return dict(my_class=my_class, 
                 modules=modules)
 
-@auth.requires(lambda: enrolled_in_class(record_id=int(request.args(0)), record_type=2))
+@auth.requires(lambda: enrolled_in_class(record_id=request.args(0, cast=int), record_type=2))
 def lesson():
     try:
-        lesson_id = int(request.args(0))
+        lesson_id = request.args(0, cast=int)
     except:
         redirect(URL('index'))
     lesson = db(Lesson.id == lesson_id).select().first()
@@ -133,19 +133,20 @@ def lesson():
                 contents=contents,
                 is_correct=is_correct)
 
-@auth.requires_login()
+@auth.requires(lambda: enrolled_in_class(record_id=request.args(0, cast=int), record_type=1))
 def forum():
     try:
-        class_id = int(request.args(0))
+        class_id = request.args(0, cast=int)
     except:
         redirect(URL('index'))
     topics = db(Forum.class_id == class_id).select()
-    return dict(topics=topics)
+    return dict(topics=topics,
+                class_id=class_id)
 
-@auth.requires_login()
+@auth.requires(lambda: enrolled_in_class(record_id=request.args(0, cast=int), record_type=3))
 def topic():
     try:
-        topic_id = int(request.args(0))
+        topic_id = request.args(0, cast=int)
     except:
         redirect(URL('index'))
     topic = db(Forum.id == topic_id).select().first()
@@ -161,10 +162,10 @@ def topic():
                 comments=comments,
                 form=form)
 
-@auth.requires_login()
+@auth.requires(lambda: enrolled_in_class(record_id=request.args(0, cast=int), record_type=1))
 def new_topic():
     try:
-        class_id = int(request.args(0))
+        class_id = request.args(0, cast=int)
     except:
         redirect(URL('index'))
     Forum.author.default = auth.user.id
@@ -174,10 +175,10 @@ def new_topic():
     form = crud.create(Forum, next=URL('topic', args='[id]'))
     return dict(form=form)
 
-@auth.requires_login()
+@auth.requires(lambda: enrolled_in_class(record_id=request.args(0, cast=int), record_type=1))
 def calendar():
     try:
-        class_id = int(request.args(0))
+        class_id = request.args(0, cast=int)
     except:
         redirect(URL('index'))
     dates = db((Date.class_id == class_id)|(Date.class_id == None)).select()

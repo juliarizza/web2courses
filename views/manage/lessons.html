@@ -2,7 +2,7 @@
 
 <div class="row">
 <div>
-	<h1>{{=modules[0].class_id.course.title}} <br><small>from {{=modules[0].class_id.start_date}} to {{=modules[0].class_id.end_date}}</small></h1>
+	<h1>{{=my_class.course.title}} <br><small>from {{=my_class.start_date}} to {{=my_class.end_date}}</small></h1>
 	<h2>{{=T('Modules')}}</h2>
 </div>
 <div>
@@ -72,7 +72,7 @@
 								</div>
     						{{pass}}
     					<div class="pull-right">
-    						<a href="{{=URL('pick_type', args=lesson.id, vars={'next': URL('lessons', args=modules[0].class_id)})}}"><button type="button" class="btn btn-primary btn-sm btn-success">{{=T("Add more")}}</button></a>
+    						<a href="{{=URL('pick_type', args=lesson.id, vars={'next': URL('lessons', args=my_class.id)})}}"><button type="button" class="btn btn-primary btn-sm btn-success">{{=T("Add more")}}</button></a>
     					</div>
     					</div>
     				</div>
@@ -89,7 +89,7 @@
 </div>
 
 <div class="pull-right">
-	<a href="{{=URL('new', args=[2, modules[0].class_id], vars={'next': URL('lessons', args=modules[0].class_id)})}}"><button type="button" class="btn btn-primary btn-lg">{{=T("New module")}}</button></a>
+	<a href="{{=URL('new', args=[2, my_class.id], vars={'next': URL('lessons', args=my_class.id)})}}"><button type="button" class="btn btn-primary btn-lg">{{=T("New module")}}</button></a>
 </div>
 </div>
 </div>
