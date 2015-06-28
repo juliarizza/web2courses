@@ -2,6 +2,7 @@
 A manager system for a teacher to sell/provide courses and manage classes.
 
 **Live demo:** [http://juliarizza.pythonanywhere.com/web2courses](http://juliarizza.pythonanywhere.com/web2courses)
+
 **username/email:** admin@admin.com **password:** admin
 
 ## Features
