@@ -1,37 +1,19 @@
-{{extend 'base_courses.html'}}
-{{block class}}no-sidebar{{end}}
+{{extend 'layout.html'}}
 
-<!-- Main -->
-<div class="wrapper">
-	<div class="container" id="main">
+<div class="row">
+<h1>{{=T('Courses')}}</h1>
 
-		<!-- Content -->
-			<article id="content">
-				<header>
-					<h2>{{=T('Courses')}}</h2>
-					<p>{{=T('At the moment, this is what I have for you. Enjoy it!')}}</p>
-				</header>
-			</article>
-        {{for x in range(len(courses)):}}
-        {{course = courses[x]}}
-            {{if x%2==0:}}
-                <div class="row features">
-            {{pass}}
-			<section class="6u 12u(narrower) feature">
-				<div class="image-wrapper first">
-					<a href="{{=URL('course', args=course.id)}}" class="image featured"><img src="{{=URL('download', args=course.image)}}" alt="{{=course.title}}" height="250" /></a>
-				</div>
-				<header>
-					<h3>{{=course.title}}</h3>
-				</header>
-				<p>{{=course.short_description}}</p>
-				<ul class="actions">
-                    <a style="border: none;" href="{{=URL('course', args=course.id)}}"><li class="button">{{=T("See more")}}</li></a>
-				</ul>
-			</section>
-            {{if x%2!=0:}}
-                </div>
-            {{pass}}
-       {{pass}}
-	</div>
+{{for course in courses:}}
+<div class="col-sm-6 col-md-4">
+    <div class="thumbnail">
+      <img src="{{=URL('download', args=course.image)}}" alt="Course image">
+      <div class="caption">
+        <h3>{{=course.title}}</h3>
+        <p>{{=course.short_description}}</p>
+        <p><a href="{{=URL('course', args=course.id)}}" class="btn btn-primary" role="button">{{=T("See more")}}</a></p>
+      </div>
+    </div>
+  </div>
+{{pass}}
+
 </div>
