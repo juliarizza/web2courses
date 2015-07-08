@@ -6,7 +6,7 @@
 <div class="panel panel-default">
   <div class="panel-body">
     <h2>{{=topic.title}} <small>por {{=topic.author.first_name}} {{=topic.author.last_name}}</small></h2>
-    <p>{{=topic.body}}</p>
+    <p>{{=XML(topic.body)}}</p>
   </div>
 </div>
 
@@ -18,7 +18,7 @@
   </div>
   <div class="media-body">
     <h4 class="media-heading">{{=comment.author.first_name}} {{=comment.author.last_name}} {{=T('said')}}:</h4>
-    <p>{{=comment.body}}</p>
+    <p>{{=XML(comment.body)}}</p>
   </div>
 </div>
 {{pass}}

@@ -31,9 +31,9 @@
   	<p>{{=T("We couldn't find any video here. Please, alert your instructor about this problem!")}}</p>
   	{{pass}}
   {{elif content.lesson_type == 2:}}
-  <p>{{=content.body}}</p>
+  <p>{{=XML(content.body)}}</p>
   {{elif content.lesson_type == 3:}}
-  <p>{{=content.question}}</p>
+  <p>{{=XML(content.question)}}</p>
   <form name="q_{{=content.id}}" method="post">
 	<div class="radio">
 	  <label>

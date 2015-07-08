@@ -4,7 +4,7 @@
 <div class="col-md-8 col-sm-12">
     <img src="{{=URL('download', args=course.image)}}" class="col-md-12 col-sm-12">
     <h1>{{=course.title}}</h1>
-    <p>{{=course.description}}</p>
+    <p>{{=XML(course.description)}}</p>
 </div>
 
 <div class="col-md-4 col-sm-12">
@@ -27,12 +27,14 @@
     <h3>{{=T('Open classes')}}</h3>
     {{for oc in open_classes:}}
         {{if auth.user and db((Student.class_id == oc.id)&(Student.student == auth.user.id)).count():}}
+        <a href="{{=URL('my_class', args=oc.id)}}">
         <button class="btn btn-success">
             {{=T('Starting on')}}
             {{=T("%s %dth") % (oc.start_date.strftime("%B"),oc.start_date.day)}}
             <br>
             <strong>{{=T("You are already on this class!")}}</strong>
         </button>
+        </a>
         {{else:}}
         <a href="{{=URL('enroll', args=oc.id)}}">
         <button class="btn btn-warning">

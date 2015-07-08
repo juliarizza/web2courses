@@ -17,10 +17,10 @@ def enrolled_in_class(record_id, record_type):
 		else:
 			return False
 	elif record_type == 3:
-		topic = db(Comment.id == record_id).select().first()
-		if db((Student.class_id == topic.post.class_id)\
+		topic = db(Forum.id == record_id).select().first()
+		if db((Student.class_id == topic.class_id)\
 			&(Student.student == auth.user.id)).count()\
-			|is_course_owner(topic.post.class_id):
+			|is_course_owner(topic.class_id):
 			return True
 		else:
 			return False

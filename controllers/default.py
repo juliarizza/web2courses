@@ -96,10 +96,7 @@ def my_courses():
 
 @auth.requires(lambda: enrolled_in_class(record_id=request.args(0, cast=int), record_type=1))
 def my_class():
-    try:
-        class_id = request.args(0, cast=int)
-    except:
-        redirect(URL('index'))
+    class_id = request.args(0, cast=int)
     my_class = db(Class.id == class_id).select().first()
     modules = db(Module.class_id == class_id).select()
     return dict(my_class=my_class, 
@@ -107,10 +104,7 @@ def my_class():
 
 @auth.requires(lambda: enrolled_in_class(record_id=request.args(0, cast=int), record_type=2))
 def lesson():
-    try:
-        lesson_id = request.args(0, cast=int)
-    except:
-        redirect(URL('index'))
+    lesson_id = request.args(0, cast=int)
     lesson = db(Lesson.id == lesson_id).select().first()
     videos = lesson.videos.select()
     texts = lesson.texts.select()
@@ -135,20 +129,14 @@ def lesson():
 
 @auth.requires(lambda: enrolled_in_class(record_id=request.args(0, cast=int), record_type=1))
 def forum():
-    try:
-        class_id = request.args(0, cast=int)
-    except:
-        redirect(URL('index'))
+    class_id = request.args(0, cast=int)
     topics = db(Forum.class_id == class_id).select()
     return dict(topics=topics,
                 class_id=class_id)
 
 @auth.requires(lambda: enrolled_in_class(record_id=request.args(0, cast=int), record_type=3))
 def topic():
-    try:
-        topic_id = request.args(0, cast=int)
-    except:
-        redirect(URL('index'))
+    topic_id = request.args(0, cast=int)
     topic = db(Forum.id == topic_id).select().first()
     comments = db(Comment.post == topic_id).select()
 
@@ -164,23 +152,19 @@ def topic():
 
 @auth.requires(lambda: enrolled_in_class(record_id=request.args(0, cast=int), record_type=1))
 def new_topic():
-    try:
-        class_id = request.args(0, cast=int)
-    except:
-        redirect(URL('index'))
+    class_id = request.args(0, cast=int)
     Forum.author.default = auth.user.id
     Forum.author.readable = Forum.author.writable = False
     Forum.class_id.default = class_id
     Forum.class_id.readable = Forum.class_id.writable = False
-    form = crud.create(Forum, next=URL('topic', args='[id]'))
+    form = SQLFORM(Forum)
+    if form.process().accepted:
+        redirect(URL('topic', args=form.vars.id))
     return dict(form=form)
 
 @auth.requires(lambda: enrolled_in_class(record_id=request.args(0, cast=int), record_type=1))
 def calendar():
-    try:
-        class_id = request.args(0, cast=int)
-    except:
-        redirect(URL('index'))
+    class_id = request.args(0, cast=int)
     dates = db((Date.class_id == class_id)|(Date.class_id == None)).select()
     my_class = db(Class.id == class_id).select().first()
     modules = db(Module.class_id == class_id).select()

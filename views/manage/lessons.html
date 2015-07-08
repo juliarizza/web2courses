@@ -22,7 +22,7 @@
     </div>
     <div id="module{{=module.id}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading{{=module.id}}">
       <div class="panel-body">
-      <p>{{=module.description}}</p>
+      <p>{{=XML(module.description)}}</p>
     	<div class="panel-group" id="lessons_{{=module.id}}" role="tablist" aria=multiselectable="true">
     		{{for lesson in module.lessons.select(orderby=Lesson.place):}}
     			<div class="panel panel-default">

@@ -4,7 +4,7 @@
 Course = db.define_table("courses",
                Field("title"),
                Field("short_description", "text"),
-               Field("description", "text"),
+               Field("description", "text", widget=ckeditor.widget),
                Field("price", "float", default=0),
                Field("discount", "float", default=0),
                Field("max_students", "integer", default=0),
@@ -30,7 +30,7 @@ Student = db.define_table("students",
 ## modules table
 Module = db.define_table("modules",
                Field("title"),
-               Field("description", "text"),
+               Field("description", "text", widget=ckeditor.widget),
                Field("place", "integer"),
                Field("class_id", "reference classes")
               )
@@ -54,7 +54,7 @@ Video = db.define_table("videos",
 
 ## text lesson table
 Text = db.define_table("texts",
-             Field("body", "text"),
+             Field("body", "text", widget=ckeditor.widget),
              Field("place", "integer"),
              Field("lesson", "reference lessons"),
              Field("lesson_type", "integer", default=2)
@@ -62,7 +62,7 @@ Text = db.define_table("texts",
 
 ## exercise lesson table
 Exercise = db.define_table("exercises",
-                 Field("question", "text"),
+                 Field("question", "text", widget=ckeditor.widget),
                  Field("alternative_a"),
                  Field("alternative_b"),
                  Field("alternative_c"),
@@ -90,7 +90,7 @@ Date = db.define_table("dates",
 ## forum table
 Forum = db.define_table("forum",
               Field("title"),
-              Field("body", "text"),
+              Field("body", "text", widget=ckeditor.widget),
               Field("author", "reference auth_user"),
               Field("created_on", "date", default=request.now),
               Field("class_id", "reference classes")
@@ -98,7 +98,7 @@ Forum = db.define_table("forum",
 
 ## forum comments table
 Comment = db.define_table("comments",
-                Field("body", "text"),
+                Field("body", "text", widget=ckeditor.widget),
                 Field("author", "reference auth_user"),
                 Field("post", "reference forum")
                )

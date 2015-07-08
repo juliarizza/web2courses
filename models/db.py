@@ -36,6 +36,12 @@ response.generic_patterns = ['*'] if request.is_local else []
 response.formstyle = myconf.take('forms.formstyle')  # or 'bootstrap3_stacked' or 'bootstrap2' or other
 response.form_label_separator = myconf.take('forms.separator')
 
+## CKEditor for text fields! yay!
+from plugin_ckeditor import CKEditor
+
+ckeditor = CKEditor(db)
+ckeditor.define_tables()
+
 
 ## (optional) optimize handling of static files
 # response.optimize_css = 'concat,minify,inline'

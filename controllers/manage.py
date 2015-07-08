@@ -26,10 +26,7 @@ def classes():
 def lessons():
     import itertools
 
-    try:
-        class_id = request.args(0,cast=int)
-    except:
-        redirect(URL('default', 'index'))
+    class_id = request.args(0,cast=int)
 
     my_class = db(Class.id == class_id).select().first()
     modules = db(Module.class_id == class_id).select()
