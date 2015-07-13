@@ -108,3 +108,9 @@ Interest = db.define_table("interests",
              Field("email"),
              Field("course", "reference courses")
              )
+
+Announcement = db.define_table("announcements",
+             Field("title"),
+             Field("body", "text", widget=ckeditor.widget),
+             Field("class_id", "reference classes")
+             )

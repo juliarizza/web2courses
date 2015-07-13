@@ -1,0 +1,44 @@
+{{extend 'layout.html'}}
+
+<div class="row">
+	<div class="col-md-12 col-sm-12">
+		<h1>{{=T('Course Announcements')}}</h1>
+		<div class="btn-group btn-group-lg" role="group">
+			<a href="{{=URL('announcements', args=class_id)}}"><button type="button" class="btn btn-default">{{=T('Announcements')}} <span class="badge">{{=len(announcements)}}</span></button></a>
+			<a href="{{=URL('my_class', args=class_id)}}"><button type="button" class="btn btn-default">{{=T('Modules')}}</button></a>
+		  	<a href="{{=URL('forum', args=class_id)}}"><button type="button" class="btn btn-default">{{=T('Forum')}}</button></a>
+		  	<a href="{{=URL('calendar', args=class_id)}}"><button type="button" class="btn btn-default">{{=T('Calendar')}}</button></a>
+		</div>
+		{{if is_course_owner(class_id):}}
+		<div class="pull-right">
+			<a href="{{=URL('manage', 'new', args=[7, class_id], vars={'next': URL('announcements', args=class_id)})}}"><button class="btn btn-primary">{{=T('New announcement')}}</button></a>
+		</div>
+		{{pass}}
+	</div>
+</div>
+
+<br>
+
+<div class="row">
+	<div class="col-md-12 col-sm-12">
+		{{for an in announcements:}}
+			<div class="panel panel-info">
+			  <div class="panel-heading">
+			    <h3 class="panel-title" style="display: inline;">{{=an.title}}</h3>
+			    {{if is_course_owner(class_id):}}
+			    <div class="pull-right">
+			    	<a href="{{=URL('manage', 'edit', args=[7, an.id], vars={'next': URL('announcements', args=class_id)})}}"><i class="glyphicon glyphicon-pencil"></i></a>
+			    	<a href="{{=URL('manage', 'delete', args=[7, an.id], vars={'next': URL('announcements', args=class_id)})}}"><i class="glyphicon glyphicon-trash"></i></a>
+			    </div>
+			    {{pass}}
+			  </div>
+			  <div class="panel-body">
+			    {{=XML(an.body)}}
+			  </div>
+			</div>
+		{{pass}}
+		{{if len(announcements) == 0:}}
+			<strong>{{=T('No announcements yet!')}}</strong>
+		{{pass}}
+	</div>
+</div>

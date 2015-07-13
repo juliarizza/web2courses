@@ -76,6 +76,10 @@ Comment.post.requires = IS_IN_DB(db, "forum.id", "%(title)s")
 Interest.email.requires = IS_EMAIL()
 Interest.course.requires = IS_IN_DB(db, 'courses.id', '%(title)s')
 
+## announcements table
+Announcement.class_id.requires = IS_IN_DB(db, "classes.id", "%(course)s - %(start_date)s")
+Announcement.class_id.writable = Announcement.class_id.readable = False
+
 def check_if_exists(form):
     q1 = (Interest.email == form.vars.email)
     q2 = (Interest.course == form.vars.course)

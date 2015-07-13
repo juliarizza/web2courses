@@ -175,3 +175,10 @@ def calendar():
     return dict(dates=dates,
                 my_class=my_class,
                 lessons=lessons)
+
+@auth.requires(lambda: enrolled_in_class(record_id=request.args(0, cast=int), record_type=1))
+def announcements():
+    class_id = request.args(0, cast=int)
+    announcements = db(Announcement.class_id == class_id).select()
+    return dict(announcements=announcements,
+                class_id=class_id)

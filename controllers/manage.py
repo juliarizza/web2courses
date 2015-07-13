@@ -64,7 +64,7 @@ def pick_type():
 
 @auth.requires_membership('Teacher')
 def new():
-    tables = [Course, Class, Module, Lesson, Video, Text, Exercise]
+    tables = [Course, Class, Module, Lesson, Video, Text, Exercise, Announcement]
     table_type = request.args(0,cast=int)
 
     if table_type == 0:
@@ -87,23 +87,25 @@ def new():
         elif table_type == 6:
             Exercise.place.default = counter
             Exercise.lesson.default = request.args(1,cast=int)
+    elif table_type == 7:
+        Announcement.class_id.default = request.args(1, cast=int)
 
     form = SQLFORM(tables[table_type]).process(next=request.vars.next)
     return dict(form=form)
 
 @auth.requires_membership('Teacher')
 def edit():
-    tables = [Course, Class, Module, Lesson, Video, Text, Exercise]
+    tables = [Course, Class, Module, Lesson, Video, Text, Exercise, Announcement]
     table_type = request.args(0,cast=int)
     record_id = request.args(1,cast=int)
 
-    form = SQLFORM(tables[table_type], record_id).process(next=request.vars.next)
+    form = SQLFORM(tables[table_type], record_id, showid=False).process(next=request.vars.next)
     return dict(form=form)
 
 @auth.requires_membership('Teacher')
 def delete():
-    tables = [Course, Class, Module, Lesson, Video, Text, Exercise]
+    tables = [Course, Class, Module, Lesson, Video, Text, Exercise, Announcement]
     table_type = request.args(0,cast=int)
     record_id = request.args(1,cast=int)
-    db(tables[table_type]==record_id).delete()
+    db(tables[table_type].id==record_id).delete()
     redirect(request.vars.next)
