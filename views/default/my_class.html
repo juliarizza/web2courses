@@ -16,6 +16,7 @@
 <h2>{{=T("Modules")}}</h2>
 	<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
 	{{for module in modules:}}
+	{{if module.lessons(Lesson.start_date <= request.now.date()).count() > 0:}}
 	  <div class="panel panel-default">
 	    <div class="panel-heading" role="tab" id="heading{{=module.id}}">
 	      <h4 class="panel-title">
@@ -31,7 +32,7 @@
 	      <div class="panel-body">
 	      <p>{{=XML(module.description)}}</p>
 	    	<div class="panel-group" id="lessons_{{=module.id}}" role="tablist" aria=multiselectable="true">
-	    		{{for lesson in module.lessons.select(orderby=Lesson.place):}}
+	    		{{for lesson in module.lessons(Lesson.start_date <= request.now.date()).select(orderby=Lesson.place):}}
 	    			<div class="panel panel-default">
 	    				<div class="panel-heading" role="tab" id="lessonHeading{{=lesson.id}}">
 	    					<h4 class="panel-title">
@@ -51,6 +52,7 @@
 	      </div>
 	    </div>
 	  </div>
+	  {{pass}}
 	 {{pass}}
 	</div>
 </div>

@@ -106,6 +106,9 @@ def my_class():
 def lesson():
     lesson_id = request.args(0, cast=int)
     lesson = db(Lesson.id == lesson_id).select().first()
+    if lesson.start_date > request.now:
+        raise HTTP(404)
+
     videos = lesson.videos.select()
     texts = lesson.texts.select()
     exercises = lesson.exercises.select()
