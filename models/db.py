@@ -71,6 +71,10 @@ auth.settings.extra_fields['auth_user'] = [
     ]
 auth.define_tables(username=False, signature=False)
 
+import logging
+logger = logging.getLogger("web2py.app.%s" % request.application)
+logger.setLevel(logging.DEBUG)
+
 ## configure email
 mail = auth.settings.mailer
 mail.settings.server = 'logging' if request.is_local else myconf.take('smtp.server')

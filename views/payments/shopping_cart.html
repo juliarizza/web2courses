@@ -1,0 +1,81 @@
+{{extend 'layout.html'}}
+
+<div class="row">
+	<h1>{{=T('Shopping Cart')}}</h1>
+	<div class="pull-left">
+		<a href="{{=URL('default', 'courses')}}">
+			<button type="button" class="btn btn-primary btn-lg">{{=T('Continue Shopping')}}</button>
+		</a>
+	</div>
+	<div class="pull-right">
+			{{if len(classes) > 0:}}
+			<a href="{{=URL('register_order')}}">
+				<button type="button" class="btn btn-success btn-lg">{{=T('Buy Now')}}</button>
+			</a>
+			{{else:}}
+				<button type="button" class="btn btn-success btn-lg" disabled="disabled">{{=T('Buy Now')}}</button>
+			{{pass}}
+	</div>
+</div>
+<br />
+<div class="row">
+	{{if len(classes) > 0:}}
+	<div class="col-md-12 col-sm-12">
+	<table class="table table-bordered">
+		<thead>
+			<tr>
+				<th>{{=T('Courses')}}</th>
+				<th>{{=T('Start')}}</th>
+				<th>{{=T('End')}}</th>
+				<th>{{=T('Price')}}</th>
+			</tr>
+		</thead>
+		<tbody>
+		{{for cart_class in classes:}}
+			<tr>
+				<td>
+					{{=cart_class.course.title}}
+					<a href="{{=URL('remove_from_shopping_cart', args=cart_class.id)}}"><i class="glyphicon glyphicon-remove"></i></a>
+				</td>
+				<td>{{=cart_class.start_date}}</td>
+				<td>{{=cart_class.end_date}}</td>
+				<td>R${{="%.2f" % (cart_class.course.price-cart_class.course.discount)}}</td>
+			</tr>
+		{{pass}}
+		<tr class="success">
+			<td></td>
+			<td></td>
+			<td class="text-right"><strong>{{=T('Total')}}:</strong></td>
+			<td>R${{="%.2f" % amount}}</td>
+		</tr>
+		</tbody>
+	</table>
+	</div>
+	<div class="col-md-12 col-sm-12">
+		<div class="alert alert-info" role="alert">{{=T('If you have any discount coupon, you can use it on payment stage.')}}</div>
+	</div>
+	{{else:}}
+	<div class="col-md-12 col-sm-12">
+		<div class="alert alert-warning" role="alert">
+			{{=T('You have nothing in your shopping cart yet!')}}
+		</div>
+	</div>
+	{{pass}}
+</div>
+<br>
+<div class="row">
+	<div class="pull-left">
+		<a href="{{=URL('default', 'courses')}}">
+			<button type="button" class="btn btn-primary btn-lg">{{=T('Continue Shopping')}}</button>
+		</a>
+	</div>
+	<div class="pull-right">
+		{{if len(classes) > 0:}}
+			<a href="{{=URL('register_order')}}">
+				<button type="button" class="btn btn-success btn-lg">{{=T('Buy Now')}}</button>
+			</a>
+		{{else:}}
+			<button type="button" class="btn btn-success btn-lg" disabled="disabled">{{=T('Buy Now')}}</button>
+		{{pass}}
+	</div>
+</div>

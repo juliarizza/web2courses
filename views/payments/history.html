@@ -1,0 +1,25 @@
+{{extend 'layout.html'}}
+
+<div class="row">
+	<h1>{{=T('Payment History')}}</h1>
+</div>
+
+<div class="row">
+	<table class="table table-bordered table-striped">
+		<thead>
+			<tr>
+				<th>{{=T('Order')}}</th>
+				<th>{{=T('Date')}}</th>
+				<th>{{=T('Status')}}</th>
+			</tr>
+		</thead>
+		<tbody>
+			{{for transaction in history:}}
+			<tr>
+				<td>{{=transaction.token}}</td>
+				<td>{{=transaction.order_date}}</td>
+				<td><a href="{{=URL('payments', 'details', args=transaction.id)}}">{{=T('Details')}}</a></td>
+			</tr>
+			{{pass}}
+		</tbody>
+	</table>

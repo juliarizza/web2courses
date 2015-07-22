@@ -1,0 +1,41 @@
+{{extend 'layout.html'}}
+
+<div class="row">
+	<h1>{{=T('Order details')}}</h1>
+	<div class="panel panel-default">
+	  <div class="panel-heading">
+	    <h3 class="panel-title">{{=T('Order Nº')}} {{=order.token}}</h3>
+	  </div>
+	  <div class="panel-body">
+	    <div class="pull-left"><strong>{{=T('Order date')}}:</strong> {{=order.order_date}}</div>
+	    <div class="pull-right"><strong>{{=T('Status')}}:</strong> {{=order_status.get(int(order.status))}}</div>
+	    <div class="clearfix"></div>
+	    <h4>{{=T('Products')}}</h4>
+	    <table class="table table-bordered">
+	    	<thead>
+	    		<tr>
+	    			<th>{{=T('Course')}}</th>
+	    			<th>{{=T('Start date')}}</th>
+	    			<th>{{=T('End date')}}</th>
+	    			<th>{{=T('Price')}}</th>
+	    		</tr>
+	    	</thead>
+	    	<tbody>
+	    		{{for product in order.products:}}
+	    		<tr>
+	    			<td>{{=product.course.title}}</td>
+	    			<td>{{=product.start_date}}</td>
+	    			<td>{{=product.end_date}}</td>
+	    			<td>R${{="%.2f" % (product.course.price-product.course.discount)}}</td>
+	    		</tr>
+	    		{{pass}}
+	    		<tr class="success">
+	    			<td></td><td></td>
+	    			<td>{{=T('Total')}}:</td>
+	    			<td>R${{="%.2f" % order.amount}}</td>
+	    		</tr>
+	    	</tbody>
+	    </table>
+	  </div>
+	</div>
+</div>

@@ -14,7 +14,7 @@
 {{for topic in topics:}}
 <div class="panel panel-default">
   <div class="panel-body">
-    <a href="{{=URL('topic', args=topic.id)}}"><h2>{{=topic.title}} <small>por {{=topic.author.first_name}} {{=topic.author.last_name}}</small></h2></a>
+    <a href="{{=URL('topic', args=topic.id)}}"><h2>{{=topic.title}} <small>por {{=topic.created_by.first_name}} {{=topic.created_by.last_name}}</small></h2></a>
     <p>{{=XML(topic.body[:241])}}...</p>
   </div>
 </div>

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 class_status = {1: T("In Progress"), 2: T("Closed"), 3: T("Open Enrollment")}
-
+order_status = {1: T('Pending'), 2: T('Confirmed'), 3: T('Denied')}
 
 ## courses table
 Course.title.requires = IS_NOT_EMPTY()
@@ -63,13 +63,13 @@ Date.marked_date.requires = IS_DATE()
 Date.class_id.requires = IS_EMPTY_OR(IS_IN_DB(db, "classes.id", "%(course)s - %(start_date)s"))
 
 ## forum table
-Forum.author.requires = IS_IN_DB(db, "auth_user.id", "%(first_name)s %(last_name)s")
+Forum.created_by.requires = IS_IN_DB(db, "auth_user.id", "%(first_name)s %(last_name)s")
 Forum.created_on.requires = IS_DATE()
 Forum.class_id.requires = IS_IN_DB(db, "classes.id", "%(course)s - %(id)d")
 Forum.created_on.readable = Forum.created_on.writable = False
 
 ## forum comments table
-Comment.author.requires = IS_IN_DB(db, "auth_user.id", "%(first_name)s %(last_name)s")
+Comment.created_by.requires = IS_IN_DB(db, "auth_user.id", "%(first_name)s %(last_name)s")
 Comment.post.requires = IS_IN_DB(db, "forum.id", "%(title)s")
 
 ## courses interest table
@@ -85,3 +85,23 @@ def check_if_exists(form):
     q2 = (Interest.course == form.vars.course)
     if db(q1&q2).count():
         form.errors.email = T("You are already on the list for this course!")
+
+######################
+### PAYMENT TABLES ###
+######################
+
+## orders table
+Order.user_id.requires = IS_IN_DB(db, 'auth_user.id', '%(first_name)s %(last_name)s')
+Order.order_date.requires = IS_DATETIME()
+Order.products.requires = IS_IN_DB(db, 'classes.id', multiple=True)
+Order.status.requires = IS_IN_SET(order_status)
+Order.amount.compute = lambda row: total_amount(row)
+Order.token.compute = lambda row: generate_token()
+
+## pending transactions table
+Pending.order_id.requires = IS_IN_DB(db, 'orders.id')
+
+## confirmed transactions table
+Confirmed.order_id.requires = IS_IN_DB(db, 'orders.id')
+Confirmed.pending_id.requires = IS_IN_DB(db, 'pending_transactions.id')
+Confirmed.confirmation_time.requires = IS_DATETIME()

@@ -25,7 +25,15 @@ response.google_analytics_id = None
 #########################################################################
 
 response.menu = [
-    (T('Home'), False, URL('default', 'index'), [])
+    (T('Home'), False, URL('default', 'index'), []),
+    (T('Courses'), False, URL('default', 'courses'), []),
+    (T('Shopping Cart'), False, URL('payments', 'shopping_cart'), [])
 ]
+
+if auth.user:
+	response.menu.extend([
+		(T('My courses'), False, URL('default', 'my_courses'), []),
+		(T('Payment History'), False, URL('payments', 'history'), [])
+		])
 
 if "auth" in locals(): auth.wikimenu() 

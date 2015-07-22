@@ -5,7 +5,7 @@
 
 <div class="panel panel-default">
   <div class="panel-body">
-    <h2>{{=topic.title}} <small>por {{=topic.author.first_name}} {{=topic.author.last_name}}</small></h2>
+    <h2>{{=topic.title}} <small>por {{=topic.created_by.first_name}} {{=topic.created_by.last_name}}</small></h2>
     <p>{{=XML(topic.body)}}</p>
   </div>
 </div>
@@ -14,10 +14,10 @@
 {{for comment in comments:}}
 <div class="media">
   <div class="media-left">
-      <img class="media-object" src="{{=URL('download', args=comment.author.avatar)}}" alt="{{=T('User avatar')}}" height="64" width="64">
+      <img class="media-object" src="{{=URL('download', args=comment.created_by.avatar)}}" alt="{{=T('User avatar')}}" height="64" width="64">
   </div>
   <div class="media-body">
-    <h4 class="media-heading">{{=comment.author.first_name}} {{=comment.author.last_name}} {{=T('said')}}:</h4>
+    <h4 class="media-heading">{{=comment.created_by.first_name}} {{=comment.created_by.last_name}} {{=T('said')}}:</h4>
     <p>{{=XML(comment.body)}}</p>
   </div>
 </div>

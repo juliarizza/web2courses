@@ -6,12 +6,12 @@
 ####                                                                          ####
 ##################################################################################
 
-@auth.requires_membership('Teacher')
+@auth.requires_membership('Teacher', 'Admin')
 def courses():
     courses = db(Course.course_owner == auth.user.id).select()
     return dict(courses=courses)
 
-@auth.requires_membership('Teacher')
+@auth.requires_membership('Teacher', 'Admin')
 def classes():
     if request.vars.course:
         course_id = int(request.vars.course)
@@ -22,13 +22,13 @@ def classes():
             )
     return dict(classes=classes)
 
-@auth.requires(lambda: is_course_owner(request.args(0, cast=int)))
+@auth.requires(lambda: is_course_owner(request.args(0, cast=int))  | auth.has_membership("Admin"))
 def lessons():
     import itertools
 
     class_id = request.args(0,cast=int)
 
-    my_class = db(Class.id == class_id).select().first()
+    my_class = Class(id=class_id)
     modules = db(Module.class_id == class_id).select()
 
     all_lessons = {}
@@ -45,7 +45,7 @@ def lessons():
                 all_lessons=all_lessons,
                 my_class=my_class)
 
-@auth.requires_membership('Teacher')
+@auth.requires_membership('Teacher', 'Admin')
 def pick_type():
     form = SQLFORM.factory(
         Field('type', requires=IS_IN_SET({4: T('Video'), 5: T('Text'), 6: T('Question')}))
@@ -62,7 +62,7 @@ def pick_type():
 ####                                                                          ####
 ##################################################################################
 
-@auth.requires_membership('Teacher')
+@auth.requires_membership('Teacher', 'Admin')
 def new():
     tables = [Course, Class, Module, Lesson, Video, Text, Exercise, Announcement]
     table_type = request.args(0,cast=int)
@@ -76,7 +76,7 @@ def new():
         Lesson.lesson_module.default = request.args(1,cast=int)
         Lesson.place.default = db(Lesson.lesson_module == request.args(1,cast=int)).count()
     elif table_type in [4, 5, 6]:
-        lesson = db(Lesson.id == request.args(1,cast=int)).select().first()
+        lesson = Lesson(id=request.args(1, cast=int))
         counter = lesson.videos.count() + lesson.texts.count() + lesson.exercises.count()
         if table_type == 4:
             Video.place.default = counter
@@ -93,7 +93,7 @@ def new():
     form = SQLFORM(tables[table_type]).process(next=request.vars.next)
     return dict(form=form)
 
-@auth.requires_membership('Teacher')
+@auth.requires_membership('Teacher', 'Admin')
 def edit():
     tables = [Course, Class, Module, Lesson, Video, Text, Exercise, Announcement]
     table_type = request.args(0,cast=int)
@@ -102,7 +102,7 @@ def edit():
     form = SQLFORM(tables[table_type], record_id, showid=False).process(next=request.vars.next)
     return dict(form=form)
 
-@auth.requires_membership('Teacher')
+@auth.requires_membership('Teacher', 'Admin')
 def delete():
     tables = [Course, Class, Module, Lesson, Video, Text, Exercise, Announcement]
     table_type = request.args(0,cast=int)

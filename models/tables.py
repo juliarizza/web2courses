@@ -91,26 +91,55 @@ Date = db.define_table("dates",
 Forum = db.define_table("forum",
               Field("title"),
               Field("body", "text", widget=ckeditor.widget),
-              Field("author", "reference auth_user"),
-              Field("created_on", "date", default=request.now),
-              Field("class_id", "reference classes")
+              Field("class_id", "reference classes"),
+              auth.signature
              )
 
 ## forum comments table
 Comment = db.define_table("comments",
                 Field("body", "text", widget=ckeditor.widget),
-                Field("author", "reference auth_user"),
-                Field("post", "reference forum")
+                Field("post", "reference forum"),
+                auth.signature
                )
 
-## Course interest table
+## course interest table
 Interest = db.define_table("interests",
              Field("email"),
              Field("course", "reference courses")
              )
 
+## teacher's announcement table
 Announcement = db.define_table("announcements",
              Field("title"),
              Field("body", "text", widget=ckeditor.widget),
              Field("class_id", "reference classes")
              )
+
+######################
+### PAYMENT TABLES ###
+######################
+
+## register user's orders
+Order = db.define_table('orders',
+            Field('user_id', 'reference auth_user'),
+            Field('order_date', 'datetime'),
+            Field('products', 'list:reference classes'),
+            Field('amount', 'double'),
+            Field('status', default=1),
+            Field('token')
+            )
+
+## stores pending transactions to connect to payment services
+Pending = db.define_table('pending_transactions',
+            Field('order_id', 'reference orders'),
+            Field('confirmed', 'boolean', default=False),
+            auth.signature
+            )
+
+## stores confirmed transactions to register user's payments
+Confirmed = db.define_table('confirmed_transactions',
+            Field('order_id', 'reference orders'),
+            Field('pending_id', 'reference pending_transactions', ondelete='SET NULL'),
+            Field('confirmation_time', 'datetime'),
+            auth.signature
+            )

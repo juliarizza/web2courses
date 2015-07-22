@@ -61,7 +61,7 @@ def courses():
 
 def course():
     course_id = request.args(0, cast=int)
-    course = db(Course.id == course_id).select().first()
+    course = Course(id=course_id)
     open_classes = course.classes(Class.status == 3).select()
     
     Interest.course.default = course_id
@@ -77,16 +77,15 @@ def course():
         open_classes=open_classes,
         interest_form=interest_form)
 
-@auth.requires_login()
 def enroll():
     class_id = request.args(0, cast=int)
-    if not class_id:
-        session.flash = T("No class selected!")
-        redirect(URL('courses'))
-        
-    Student.insert(student=auth.user.id, class_id=class_id, status=1)
-    session.flash = T("Congrats! You're enrolled on a new course!") 
-    redirect(URL('my_courses'))
+
+    if not class_id in session.cart:
+        session.cart.append(class_id)
+    else:
+        session.flash = T('This course is already on your shopping cart!')
+
+    redirect(URL('payments', 'shopping_cart'))
 
 @auth.requires_login()
 def my_courses():
@@ -94,18 +93,18 @@ def my_courses():
     classes = db(Class.id.belongs([x.class_id for x in class_ids])).select()
     return dict(classes=classes)
 
-@auth.requires(lambda: enrolled_in_class(record_id=request.args(0, cast=int), record_type=1))
+@auth.requires(lambda: enrolled_in_class(record_id=request.args(0, cast=int), record_type=1) | auth.has_membership("Admin"))
 def my_class():
     class_id = request.args(0, cast=int)
-    my_class = db(Class.id == class_id).select().first()
+    my_class = Class(id=class_id)
     modules = db(Module.class_id == class_id).select()
     return dict(my_class=my_class, 
                 modules=modules)
 
-@auth.requires(lambda: enrolled_in_class(record_id=request.args(0, cast=int), record_type=2))
+@auth.requires(lambda: enrolled_in_class(record_id=request.args(0, cast=int), record_type=2) | auth.has_membership("Admin"))
 def lesson():
     lesson_id = request.args(0, cast=int)
-    lesson = db(Lesson.id == lesson_id).select().first()
+    lesson = Lesson(id=lesson_id)
     if lesson.start_date > request.now:
         raise HTTP(404)
 
@@ -121,7 +120,7 @@ def lesson():
         keys = request.vars.keys()
         for key in keys:
             q_id = int(key.split('_')[1])
-            question = db(Exercise.id==q_id).select().first()
+            question = Exercise(id=q_id)
             if question.correct == int(request.vars[key]):
                 is_correct[key] = True
             else:
@@ -130,17 +129,17 @@ def lesson():
                 contents=contents,
                 is_correct=is_correct)
 
-@auth.requires(lambda: enrolled_in_class(record_id=request.args(0, cast=int), record_type=1))
+@auth.requires(lambda: enrolled_in_class(record_id=request.args(0, cast=int), record_type=1) | auth.has_membership("Admin"))
 def forum():
     class_id = request.args(0, cast=int)
     topics = db(Forum.class_id == class_id).select()
     return dict(topics=topics,
                 class_id=class_id)
 
-@auth.requires(lambda: enrolled_in_class(record_id=request.args(0, cast=int), record_type=3))
+@auth.requires(lambda: enrolled_in_class(record_id=request.args(0, cast=int), record_type=3) | auth.has_membership("Admin"))
 def topic():
     topic_id = request.args(0, cast=int)
-    topic = db(Forum.id == topic_id).select().first()
+    topic = Forum(id=topic_id)
     comments = db(Comment.post == topic_id).select()
 
     Comment.author.default = auth.user.id
@@ -153,7 +152,7 @@ def topic():
                 comments=comments,
                 form=form)
 
-@auth.requires(lambda: enrolled_in_class(record_id=request.args(0, cast=int), record_type=1))
+@auth.requires(lambda: enrolled_in_class(record_id=request.args(0, cast=int), record_type=1) | auth.has_membership("Admin"))
 def new_topic():
     class_id = request.args(0, cast=int)
     Forum.author.default = auth.user.id
@@ -165,11 +164,11 @@ def new_topic():
         redirect(URL('topic', args=form.vars.id))
     return dict(form=form)
 
-@auth.requires(lambda: enrolled_in_class(record_id=request.args(0, cast=int), record_type=1))
+@auth.requires(lambda: enrolled_in_class(record_id=request.args(0, cast=int), record_type=1) | auth.has_membership("Admin"))
 def calendar():
     class_id = request.args(0, cast=int)
     dates = db((Date.class_id == class_id)|(Date.class_id == None)).select()
-    my_class = db(Class.id == class_id).select().first()
+    my_class = Class(id=class_id)
     modules = db(Module.class_id == class_id).select()
     lessons = []
     for module in modules:
@@ -179,7 +178,7 @@ def calendar():
                 my_class=my_class,
                 lessons=lessons)
 
-@auth.requires(lambda: enrolled_in_class(record_id=request.args(0, cast=int), record_type=1))
+@auth.requires(lambda: enrolled_in_class(record_id=request.args(0, cast=int), record_type=1) | auth.has_membership("Admin"))
 def announcements():
     class_id = request.args(0, cast=int)
     announcements = db(Announcement.class_id == class_id).select()

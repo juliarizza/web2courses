@@ -23,30 +23,43 @@
         </li>
     </ul>
 
+    {{at_least_one_open_class = False}}
     {{if open_classes:}}
     <h3>{{=T('Open classes')}}</h3>
     {{for oc in open_classes:}}
-        {{if auth.user and db((Student.class_id == oc.id)&(Student.student == auth.user.id)).count():}}
-        <a href="{{=URL('my_class', args=oc.id)}}">
-        <button class="btn btn-success">
-            {{=T('Starting on')}}
-            {{=T("%s %dth") % (oc.start_date.strftime("%B"),oc.start_date.day)}}
-            <br>
-            <strong>{{=T("You are already on this class!")}}</strong>
-        </button>
-        </a>
-        {{else:}}
+        {{if can_enroll(oc):}}
+        {{at_least_one_open_class = True}}
         <a href="{{=URL('enroll', args=oc.id)}}">
-        <button class="btn btn-warning">
+        <button class="btn btn-info">
             {{=T('Starting on')}}
             {{=T("%s %dth") % (oc.start_date.strftime("%B"),oc.start_date.day)}}
             <br>
             <b>{{=T('Enroll now!')}}</b>
         </button>
         </a>
+        {{else:}}
+            {{if session.errors["student"]:}}
+            {{at_least_one_open_class = True}}
+                <a href="{{=URL('my_class', args=oc.id)}}">
+                <button class="btn btn-success">
+                    {{=T('Starting on')}}
+                    {{=T("%s %dth") % (oc.start_date.strftime("%B"),oc.start_date.day)}}
+                    <br>
+                    <strong>{{=T("You are already on this class!")}}</strong>
+                </button>
+                </a>
+            {{elif session.errors["max_qty"]:}}
+                <button class="btn btn-danger">
+                    {{=T('Starting on')}}
+                    {{=T("%s %dth") % (oc.start_date.strftime("%B"),oc.start_date.day)}}
+                    <br>
+                    <strong>{{=T("FULL!")}}</strong>
+                </button>
+            {{pass}}
         {{pass}}
     {{pass}}
-    {{else:}}
+    {{pass}}
+    {{if not at_least_one_open_class:}}
     <p>{{=T('Interested? Submit your email below to be notified for the next open class.')}}</p>
     {{=interest_form.custom.begin}}
         {{interest_form.elements('#interests_email')[0]['_placeholder']=T('Your email')}}
