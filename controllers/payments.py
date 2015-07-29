@@ -12,7 +12,7 @@ def shopping_cart():
 	amount = 0
 	for class_id in session.cart:
 		cart_class = Class(id=class_id)
-
+		classes.append(cart_class)
 		amount += cart_class.course.price-cart_class.course.discount
 
 	return dict(classes=classes,

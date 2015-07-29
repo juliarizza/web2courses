@@ -31,7 +31,6 @@
 				<td>{{=class_.end_date}}</td>
 				<td>{{=class_status.get(int(class_.status))}}</td>
 				<td>
-					<a href="{{=URL('default', 'my_class', args=class_.id)}}"><i class="glyphicon glyphicon-eye-open"></i></a>
 					<a href="{{=URL('lessons', args=class_.id)}}"><i class="glyphicon glyphicon-education"></i></a>
 					<a href="{{=URL('edit', args=[1, class_.id], vars={'next':URL('classes')})}}"><i class="glyphicon glyphicon-pencil"></i></a>
 					<a href="{{=URL('delete', args=[1, class_.id], vars={'next':URL('classes')})}}"><i class="glyphicon glyphicon-trash"></i></a>

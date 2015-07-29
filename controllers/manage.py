@@ -6,12 +6,12 @@
 ####                                                                          ####
 ##################################################################################
 
-@auth.requires_membership('Teacher', 'Admin')
+@auth.requires(auth.has_membership('Teacher') or auth.has_membership('Admin'))
 def courses():
     courses = db(Course.course_owner == auth.user.id).select()
     return dict(courses=courses)
 
-@auth.requires_membership('Teacher', 'Admin')
+@auth.requires(auth.has_membership('Teacher') or auth.has_membership('Admin'))
 def classes():
     if request.vars.course:
         course_id = int(request.vars.course)
@@ -45,7 +45,7 @@ def lessons():
                 all_lessons=all_lessons,
                 my_class=my_class)
 
-@auth.requires_membership('Teacher', 'Admin')
+@auth.requires(auth.has_membership('Teacher') or auth.has_membership('Admin'))
 def pick_type():
     form = SQLFORM.factory(
         Field('type', requires=IS_IN_SET({4: T('Video'), 5: T('Text'), 6: T('Question')}))
@@ -62,7 +62,7 @@ def pick_type():
 ####                                                                          ####
 ##################################################################################
 
-@auth.requires_membership('Teacher', 'Admin')
+@auth.requires(auth.has_membership('Teacher') or auth.has_membership('Admin'))
 def new():
     tables = [Course, Class, Module, Lesson, Video, Text, Exercise, Announcement]
     table_type = request.args(0,cast=int)
@@ -93,7 +93,7 @@ def new():
     form = SQLFORM(tables[table_type]).process(next=request.vars.next)
     return dict(form=form)
 
-@auth.requires_membership('Teacher', 'Admin')
+@auth.requires(auth.has_membership('Teacher') or auth.has_membership('Admin'))
 def edit():
     tables = [Course, Class, Module, Lesson, Video, Text, Exercise, Announcement]
     table_type = request.args(0,cast=int)
@@ -102,7 +102,7 @@ def edit():
     form = SQLFORM(tables[table_type], record_id, showid=False).process(next=request.vars.next)
     return dict(form=form)
 
-@auth.requires_membership('Teacher', 'Admin')
+@auth.requires(auth.has_membership('Teacher') or auth.has_membership('Admin'))
 def delete():
     tables = [Course, Class, Module, Lesson, Video, Text, Exercise, Announcement]
     table_type = request.args(0,cast=int)

@@ -2,7 +2,7 @@
 
 <div class="row">
 <div>
-	<h1>{{=my_class.course.title}} <br><small>from {{=my_class.start_date}} to {{=my_class.end_date}}</small></h1>
+	<h1>{{=my_class.course.title}} <br><small>from {{=my_class.start_date}} to {{=my_class.end_date}} <a href="{{=URL('default', 'my_class', args=my_class.id)}}" title="{{=T('Preview')}}"><i class="glyphicon glyphicon-eye-open"></i></a></small></h1>
 	<h2>{{=T('Modules')}}</h2>
 </div>
 <div>

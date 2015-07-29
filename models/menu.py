@@ -36,4 +36,9 @@ if auth.user:
 		(T('Payment History'), False, URL('payments', 'history'), [])
 		])
 
+if auth.has_membership('Teacher') or auth.has_membership('Admin'):
+	response.menu.extend([
+		(T('Manage courses'), False, URL('manage', 'courses'), [])
+		])
+
 if "auth" in locals(): auth.wikimenu() 

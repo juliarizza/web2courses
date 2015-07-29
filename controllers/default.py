@@ -105,7 +105,7 @@ def my_class():
 def lesson():
     lesson_id = request.args(0, cast=int)
     lesson = Lesson(id=lesson_id)
-    if lesson.start_date > request.now:
+    if lesson.start_date > request.now.date():
         raise HTTP(404)
 
     videos = lesson.videos.select()

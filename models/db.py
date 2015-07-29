@@ -86,7 +86,6 @@ auth.settings.registration_requires_verification = False
 auth.settings.registration_requires_approval = False
 auth.settings.reset_password_requires_verification = True
 auth.settings.create_user_groups = False
-auth.settings.everybody_group_id = 0
 
 #########################################################################
 ## Define your tables below (or better in another model file) for example
@@ -114,3 +113,4 @@ if db(db.auth_group).count() == 0:
     db.auth_group.insert(role="Teacher", description="Teachers group.")
     db.auth_group.insert(role="Admin", description="Admins group.")
     db.commit()
+auth.settings.everybody_group_id = 0
