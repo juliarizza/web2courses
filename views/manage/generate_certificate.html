@@ -1,0 +1,6 @@
+{{extend 'layout.html'}}
+
+<h1>{{=T('Generate Certificate')}}</h1>
+<a href="{{=URL('preview_certificate', args=request.args(0))}}" class="btn btn-primary">{{=T('Preview')}}</a>
+<a href="{{=URL('send_certificate', args=request.args(0))}}" class="btn btn-success">{{=T('Send to Students')}}</a>
+{{=form}}

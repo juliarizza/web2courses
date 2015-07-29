@@ -80,6 +80,12 @@ Interest.course.requires = IS_IN_DB(db, 'courses.id', '%(title)s')
 Announcement.class_id.requires = IS_IN_DB(db, "classes.id", "%(course)s - %(start_date)s")
 Announcement.class_id.writable = Announcement.class_id.readable = False
 
+## certificates table
+Certificate.bg_template.requires = IS_IMAGE(extensions=('jpeg', 'jpg', 'png'), maxsize=(3508,2480))
+Certificate.teacher_signature.requires = IS_IMAGE(extensions=('jpeg', 'jpg', 'png'))
+Certificate.class_id.requires = IS_IN_DB(db, 'classes.id')
+Certificate.class_id.writable = Certificate.class_id.readable = False
+
 def check_if_exists(form):
     q1 = (Interest.email == form.vars.email)
     q2 = (Interest.course == form.vars.course)

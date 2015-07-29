@@ -13,9 +13,9 @@ A manager system for a teacher to sell/provide courses and manage classes.
 
 ## TODOs
 * Configure authorization system with 2 main user categories: student and teacher **DONE**
-* Integrate with payment systems (paypal, PagSeguro, etc)
-* Track students completion of courses
-* Make a .pdf certificate generator
+* Integrate with payment systems (paypal, PagSeguro, etc) **PAYPAL DONE**
+* Track students completion of courses 
+* Make a .pdf certificate generator **DONE**
 * Make a billboard for teacher announcement **DONE**
 * Implement a beautiful theme
 * Configure routes

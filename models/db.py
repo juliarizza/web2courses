@@ -42,7 +42,6 @@ from plugin_ckeditor import CKEditor
 ckeditor = CKEditor(db)
 ckeditor.define_tables()
 
-
 ## (optional) optimize handling of static files
 # response.optimize_css = 'concat,minify,inline'
 # response.optimize_js = 'concat,minify,inline'

@@ -115,6 +115,13 @@ Announcement = db.define_table("announcements",
              Field("class_id", "reference classes")
              )
 
+## certificates' info
+Certificate = db.define_table("certificates",
+             Field("bg_template", "upload"),
+             Field("class_id", "reference classes"),
+             Field("teacher_signature", "upload")
+             )
+
 ######################
 ### PAYMENT TABLES ###
 ######################
