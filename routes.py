@@ -27,10 +27,21 @@ possible_languages = read_possible_languages(abspath('applications', app))
 
 routers = {
     app: dict(
-        default_language = possible_languages['default'][0],
-        languages = [lang for lang in possible_languages
-                           if lang != 'default']
-    )
+        default_controller='default',
+        default_function={'default': 'index', 'manage': 'courses', 'payments': 'shopping_cart'},
+        controllers='DEFAULT',
+        functions={
+            'default': ['index', 'user', 'download', 'call', 'courses', 
+                        'course', 'enroll', 'my_courses', 'my_class', 'lesson',
+                        'forum', 'topic', 'new_topic', 'calendar', 'announcements'],
+            'manage': ['courses', 'classes', 'lessons', 'pick_type',
+                        'new', 'edit', 'delete', 'generate_certificate',
+                        'send_certificate', 'preview_certificate', 'download_pdf'],
+            'payments': ['shopping_cart', 'remove_from_shopping_cart', 
+                        'register_order', 'pay_courses', 'paypal', 'ipn',
+                        'success', 'history', 'details']
+            }
+    ),
 }
 
 #NOTE! To change language in your application using these rules add this line
