@@ -17,6 +17,8 @@ Class.start_date.requires = IS_DATE()
 Class.end_date.requires = IS_DATE()
 Class.course.requires = IS_IN_DB(db, "courses.id", "%(title)s")
 Class.status.requires = IS_IN_SET(class_status)
+Class.status.default = 3
+Class.status.writable = Class.status.readable = False
 
 ## students table
 Student.student.requires = IS_IN_DB(db, "auth_user.id", "%(first_name)s %(last_name)s")
@@ -103,6 +105,7 @@ Order.products.requires = IS_IN_DB(db, 'classes.id', multiple=True)
 Order.status.requires = IS_IN_SET(order_status)
 Order.amount.compute = lambda row: total_amount(row)
 Order.token.compute = lambda row: generate_token()
+Order.status.default = 1
 
 ## pending transactions table
 Pending.order_id.requires = IS_IN_DB(db, 'orders.id')

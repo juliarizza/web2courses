@@ -7,7 +7,7 @@ Course = db.define_table("courses",
                Field("description", "text", widget=ckeditor.widget),
                Field("price", "float", default=0),
                Field("discount", "float", default=0),
-               Field("max_students", "integer", default=0),
+               Field("max_students", "integer", default=10),
                Field("total_hours", "integer", default=10),
                Field("image", "upload"),
                Field("course_owner", "reference auth_user")
@@ -132,7 +132,7 @@ Order = db.define_table('orders',
             Field('order_date', 'datetime'),
             Field('products', 'list:reference classes'),
             Field('amount', 'double'),
-            Field('status', default=1),
+            Field('status'),
             Field('token')
             )
 

@@ -17,9 +17,19 @@ def classes():
         course_id = int(request.vars.course)
         classes = db(Class.course == course_id).select(orderby=~Class.start_date)
     else:
-        classes = db(Class.course.course_owner == auth.user.id).select(
-            orderby=Class.course|~Class.start_date
-            )
+        # for some reason I still have to find out, this doesn't work:
+        # classes = db(Class.course.course_owner == auth.user.id).select(
+        #     orderby=Class.course|~Class.start_date
+        #     )
+
+        # please remind me to fix this
+        courses = db(Course.course_owner == auth.user.id).select()
+        classes = []
+        for course in courses:
+            course_classes = db(Class.course == course.id).select()
+            for teacher_class in course_classes:
+                classes.append(teacher_class)
+
     return dict(classes=classes)
 
 @auth.requires(lambda: is_course_owner(request.args(0, cast=int))  | auth.has_membership("Admin"))
