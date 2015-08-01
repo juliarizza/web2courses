@@ -44,7 +44,7 @@ A manager system for a teacher to sell/provide courses and manage classes.
 	
 	6.1 Run scheduler in another instance, alongside the server: `python web2py/web2py.py -K web2courses`
 
-	6.2 Or run scheduler alongside the server in the embedded webserver: 'python web2py/web2py.py -a your_password -K web2courses -X' (This is only used when you run web2py without the web2py start window)
+	6.2 Or run scheduler alongside the server in the embedded webserver: `python web2py/web2py.py -a your_password -K web2courses -X` (This is only used when you run web2py without the web2py start window)
 
 ### Contribute!
 Copyright (c) 2015 Júlia Rizza & licensed under The MIT License (MIT)
