@@ -4,9 +4,9 @@
 <div>
 	<h1>{{=my_class.course.title}} <br><small>from {{=my_class.start_date}} to {{=my_class.end_date}} <a href="{{=URL('default', 'my_class', args=my_class.id)}}" title="{{=T('Preview')}}"><i class="glyphicon glyphicon-eye-open"></i></a></small></h1>
 	<div class="btn-group btn-group-lg" role="group">
-		<a href="{{=URL('announcements', args=my_class.id)}}"><button type="button" class="btn btn-default">{{=T('Announcements')}} <span class="badge">{{=db(Announcement.class_id == my_class.id).count()}}</span></button></a>
-	  	<a href="{{=URL('forum', args=my_class.id)}}"><button type="button" class="btn btn-default">{{=T('Forum')}}</button></a>
-	  	<a href="{{=URL('calendar', args=my_class.id)}}"><button type="button" class="btn btn-default">{{=T('Calendar')}}</button></a>
+		<a href="{{=URL('default', 'announcements', args=my_class.id)}}"><button type="button" class="btn btn-default">{{=T('Announcements')}} <span class="badge">{{=db(Announcement.class_id == my_class.id).count()}}</span></button></a>
+	  	<a href="{{=URL('default', 'forum', args=my_class.id)}}"><button type="button" class="btn btn-default">{{=T('Forum')}}</button></a>
+	  	<a href="{{=URL('default', 'calendar', args=my_class.id)}}"><button type="button" class="btn btn-default">{{=T('Calendar')}}</button></a>
 	  	<a href="{{=URL('generate_certificate', args=my_class.id)}}"><button type="button" class="btn btn-primary">{{=T('Certificates')}}</button></a>
 	</div>
 	<h2>{{=T('Modules')}}</h2>
