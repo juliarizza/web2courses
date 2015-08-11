@@ -66,7 +66,8 @@ crud = Crud(db)
 
 ## create all tables needed by auth if not custom tables
 auth.settings.extra_fields['auth_user'] = [
-    Field('avatar', 'upload', requires=IS_EMPTY_OR(IS_IMAGE()))
+    Field('avatar', 'upload', requires=IS_EMPTY_OR(IS_IMAGE())),
+    Field('bio', 'text')
     ]
 auth.define_tables(username=False, signature=False)
 

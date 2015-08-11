@@ -1,16 +1,19 @@
 {{extend 'layout.html'}}
 
 <h1>{{=T("My Courses")}}</h1>
-
+<br>
 <div class="row">
   {{for my_class in classes:}}	
-  <div class="col-sm-6 col-md-4">
+  <div class="col-xs-12 col-sm-6 col-md-4">
     <div class="thumbnail">
-      <a href="{{=URL('my_class', args=my_class.id)}}"><img src="{{=URL('download', args=my_class.course.image)}}" alt="{{T('Course image')}}"></a>
-      <div class="caption">
+      <a href="{{=URL('my_class', args=my_class.id)}}"><img src="{{=URL('download', args=my_class.course.banner)}}" alt="Course image">
+      <div class="caption"></a>
         <a href="{{=URL('my_class', args=my_class.id)}}"><h3>{{=my_class.course.title}}</h3></a>
         <p>{{=my_class.course.short_description}}</p>
-        <a href="{{=URL('my_class', args=my_class.id)}}"><button class="btn btn-block btn-lg">{{=T('Enter course')}}</button></a>
+         <div class="bottom-thumb">
+          <hr>
+          <a href="{{=URL('my_class', args=my_class.id)}}" class="btn btn-primary btn-md" role="button">{{=T("View course")}}</a>
+         </div>
       </div>
     </div>
   </div>

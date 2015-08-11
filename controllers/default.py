@@ -142,8 +142,6 @@ def topic():
     topic = Forum(id=topic_id)
     comments = db(Comment.post == topic_id).select()
 
-    Comment.author.default = auth.user.id
-    Comment.author.readable = Comment.author.writable = False
     Comment.post.default = topic_id
     Comment.post.readable = Comment.post.writable = False
     form = crud.create(Comment, next=URL('topic', args=topic_id))
@@ -155,8 +153,6 @@ def topic():
 @auth.requires(lambda: enrolled_in_class(record_id=request.args(0, cast=int), record_type=1) | auth.has_membership("Admin"))
 def new_topic():
     class_id = request.args(0, cast=int)
-    Forum.author.default = auth.user.id
-    Forum.author.readable = Forum.author.writable = False
     Forum.class_id.default = class_id
     Forum.class_id.readable = Forum.class_id.writable = False
     form = SQLFORM(Forum)

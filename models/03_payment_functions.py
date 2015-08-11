@@ -5,7 +5,7 @@ from uuid import uuid4
 ## tells if the user can enroll or not in a class
 def can_enroll(record):
 	student_qty = db(Student.class_id == record.id).count()
-	query_1 = (student_qty < record.course.max_students)
+	query_1 = (student_qty < record.course.max_students or record.course.max_students == 0)
 	query_2 = (int(record.status) == 3)
 	query_3 = (record.start_date >= request.now.date())
 	query_4 = ((auth.user and not Student(class_id=record.id, student=auth.user.id)) or not auth.user)

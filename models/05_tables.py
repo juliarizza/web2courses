@@ -9,7 +9,8 @@ Course = db.define_table("courses",
                Field("discount", "float", default=0),
                Field("max_students", "integer", default=10),
                Field("total_hours", "integer", default=10),
-               Field("image", "upload"),
+               Field("banner", "upload"),
+               Field("icon", "upload"),
                Field("course_owner", "reference auth_user")
               )
 

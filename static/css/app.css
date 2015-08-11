@@ -1,0 +1,242 @@
+body {
+	background-color: rgba(247, 247, 247, 1);
+}
+
+table {
+	background-color: rgba(255, 255, 255, 1);
+}
+
+.btn-default {
+	background: rgba(249, 249, 249, 1) !important;
+	background-image: none !important;
+	border: 1px solid rgba(234, 234, 234, 1);
+	box-shadow: none;
+	text-shadow: none;
+}
+
+.btn-default:hover {
+	background: solid rgba(234, 234, 234, 1) !important;
+	background-image: none !important;
+	border: 1px solid solid rgba(234, 234, 234, 1);
+	text-decoration: none;
+}
+
+.btn-primary {
+	background: rgba(87, 102, 153, 1) !important;
+	background-image: none !important;
+	border: 1px solid rgba(87, 102, 153, 1);
+	box-shadow: none;
+	text-shadow: none;
+}
+
+.btn-primary:hover {
+	background: rgba(108, 121, 168, 1) !important;
+	background-image: none !important;
+	border: 1px solid rgba(108, 121, 168, 1);
+	text-decoration: none;
+}
+
+.btn-success {
+	background: rgba(92, 184, 92, 1) !important;
+	background-image: none !important;
+	border: 1px solid rgba(92, 184, 92, 1);
+	box-shadow: none;
+	text-shadow: none;
+}
+
+.btn-success:hover {
+	background: rgba(88, 167, 88, 1) !important;
+	background-image: none !important;
+	border: 1px solid rgba(88, 167, 88, 1);
+	text-decoration: none;
+}
+
+.btn-danger {
+	background: rgba(212, 76, 72, 1) !important;
+	background-image: none !important;
+	border: 1px solid rgba(212, 76, 72, 1);
+	box-shadow: none;
+	text-shadow: none;
+}
+
+.btn-danger:hover {
+	background: rgba(191, 83, 81, 1) !important;
+	background-image: none !important;
+	border: 1px solid rgba(191, 83, 81, 1);
+	text-decoration: none;
+}
+
+.btn-info {
+	background: rgba(77, 186, 218, 1) !important;
+	background-image: none !important;
+	border: 1px solid rgba(77, 186, 218, 1);
+	box-shadow: none;
+	text-shadow: none;
+}
+
+.btn-info:hover {
+	background: rgba(72, 167, 195, 1) !important;
+	background-image: none !important;
+	border: 1px solid rgba(72, 167, 195, 1);
+	text-decoration: none;
+}
+
+.navbar{
+	background-color: rgba(255, 255, 255, 1);
+	border-bottom: 1px solid rgba(230, 230, 230, 1);
+	height: 60px;
+	padding-top: 5px;
+}
+
+.dropdown-menu {
+	padding-top: 15px;
+	background-color: rgba(255, 255, 255, 1);
+	border-bottom: 1px solid rgba(230, 230, 230, 1);
+}
+
+.course-footer {
+	width: 100%;
+	position: absolute;
+	bottom: 0;
+	padding: 10px;
+	color: rgba(87, 102, 153, 1);
+	background-color: #fff;
+	border-top: 1px solid rgba(230, 230, 230, 1);
+}
+
+.navbar .navbar-header h1 {
+	color: rgba(87, 102, 153, 1);
+	font-size: 20px;
+	margin-top: 15px;
+	margin-right: 30px;
+}
+
+.navbar .navbar-nav li a {
+	color: rgba(87, 102, 153, 1);
+}
+
+.navbar .navbar-nav li a:hover {
+	background-color: rgba(108, 121, 168, 0.3);
+}
+
+.thumbnail {
+	padding: 0;
+	text-align: justify;
+	float: none;
+	position: relative;
+	height: 500px;
+}
+
+.thumbnail img {
+	height: 205px;
+	border-bottom: 1px solid rgba(230, 230, 230, 1);
+}
+
+.thumbnail h3 {
+	font-size: 24px;
+	text-align: center;
+	color: rgba(87, 102, 153, 1);
+}
+
+.thumbnail p {
+	display: block;
+}
+
+.thumbnail .bottom-thumb {
+	width: 95%;
+	position: absolute;
+	bottom: 20px;	
+	text-align: center;
+}
+
+.thumbnail .btn {
+	width: 50%;
+	height: 40px;
+	font-size: 16px;
+	color: rgba(87, 102, 153, 1);
+	background: transparent !important;
+	border: 0.15em solid rgba(87, 102, 153, 1);
+	border-radius: 20px;
+}
+
+.thumbnail .btn:hover {
+	background: rgba(108, 121, 168, 1) !important;
+	border: 0.15em solid rgba(108, 121, 168, 1);
+	color: rgba(255, 255, 255, 1);
+}
+
+.banner img.cover {
+	width: 100%;
+	height: 405px;
+	position: relative;
+	background-color: rgba(255, 255, 255, 1);
+}
+
+.banner img.icon {
+	position: absolute;
+	top: 180px;
+	left: 50px;
+	border-radius: 100%;
+	width: 124px;
+	height: 124px;
+}
+
+.banner h1 {
+	position: absolute;
+	top: 200px;
+	left: 200px;
+}
+
+.course-description {
+	text-align: justify;
+	display: inline-block;
+}
+
+.course-description .panel {
+	padding: 20px;
+}
+
+.course-info {
+	display: inline-block;
+}
+
+.course-info .panel {
+	padding: 0 20px ;
+	padding-bottom: 20px;
+}
+
+.course-info .panel h2,
+.course-info .panel h3 {
+	color: rgba(87, 102, 153, 1);
+}
+
+.course-info .panel .avatar {
+	width: 150px;
+	height: 150px;
+	border-radius: 100%;
+	float: left;
+	margin: 25px 20px 10px 0;
+	border: 7px solid rgba(255, 255, 255, 1);
+	box-shadow: 0 0 5px rgba(230, 230, 230, 1);
+}
+
+.course-info h4 {
+	font-size: 32px;
+}
+
+.course-info ul {
+	list-style: none;
+}
+
+.course-info ul li {
+	line-height: 36px;
+	font-size: 16px;
+}
+
+.promo {
+	color: rgba(87, 102, 153, 1);
+}
+
+.label-free {
+	background-color: rgba(87, 102, 153, 1);
+}

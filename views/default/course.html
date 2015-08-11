@@ -1,73 +1,101 @@
 {{ extend 'layout.html' }}
-<div class="row">
 
-<div class="col-md-8 col-sm-12">
-    <img src="{{=URL('download', args=course.image)}}" class="col-md-12 col-sm-12">
+{{block header}}
+<div class="banner">
+    <img src="{{=URL('download', args=course.banner)}}" class="cover">
+    <img src="{{=URL('download', args=course.icon)}}" class="icon">
     <h1>{{=course.title}}</h1>
-    <p>{{=XML(course.description)}}</p>
 </div>
+{{end}}
 
-<div class="col-md-4 col-sm-12">
-    <h2>{{=T("General Info")}}</h2>
-    <ul>
-        <li>{{=T('Duration')}}: {{=course.total_hours}} {{=T('hours')}}</li>
-        <li>{{=T('Vacancies')}}: {{=course.max_students}} {{=T('students')}}</li>
-        <li><b>{{=T('Price')}}:</b>
-            {{if course.discount:}}
-            <strike style="color: red;">R${{='%.2f' % course.price}}</strike> R${{='%.2f' % (course.price-course.discount)}}
-            {{elif course.price == 0:}}
-            <strong>{{=T("FREE")}}</strong>
-            {{else:}}
-            R${{='%.2f' % course.price}}
-            {{pass}}
-        </li>
-    </ul>
+<div class="row">
+    <div class="col-xs-12 col-sm-7 col-md-8 course-description">
+        <div class="panel">
+            {{=XML(course.description)}}
+        </div>
+    </div>
+    <div class="col-xs-12 col-sm-3 col-md-4 course-info">
+        <div class="panel">
+            <h2>{{=T('Professor')}}</h2>
+            <img src="{{=URL('download', args=course.course_owner.avatar)}}" class="avatar" />
+            <h3>{{="%s %s" % (course.course_owner.first_name, course.course_owner.last_name)}}</h3>
+            <p>{{=course.course_owner.bio or ''}}</p>
+            <div class="clearfix"></div>
 
-    {{at_least_one_open_class = False}}
-    {{if open_classes:}}
-    <h3>{{=T('Open classes')}}</h3>
-    {{for oc in open_classes:}}
-        {{if can_enroll(oc):}}
-        {{at_least_one_open_class = True}}
-        <a href="{{=URL('enroll', args=oc.id)}}">
-        <button class="btn btn-info">
-            {{=T('Starting on')}}
-            {{=T("%s %dth") % (oc.start_date.strftime("%B"),oc.start_date.day)}}
-            <br>
-            <b>{{=T('Enroll now!')}}</b>
-        </button>
-        </a>
-        {{else:}}
-            {{if session.errors["student"]:}}
-            {{at_least_one_open_class = True}}
-                <a href="{{=URL('my_class', args=oc.id)}}">
-                <button class="btn btn-success">
+            <hr />
+
+            <ul>
+                <li class="text-center">{{=course.max_students}} {{=T('students max')}}</li>
+                <li class="text-center">{{=course.total_hours}} {{=T('hours')}}</li>
+                <li class="text-center">
+                    {{if course.discount:}}
+                    <h4>
+                    <span class="label label-success">R${{='%.2f' % float(course.price-course.discount)}}</span>
+                    <small><span class="promo">{{=T('%d%% OFF' % float(course.discount/course.price*100))}}</span></small>
+                    </h4>
+                    {{elif int(course.price) == 0:}}
+                    <h4>
+                    <span class="label label-free">{{=T('FREE')}}</span>
+                    </h4>
+                    {{else:}}
+                    <h4>
+                    <span class="label label-info">R${{='%.2f' % float(course.price)}}</span>
+                    </h4>
+                    {{pass}}
+                </li>
+            </ul>
+
+            <hr />
+
+            {{at_least_one_open_class = False}}
+            {{if open_classes:}}
+            <h3>{{=T('Open classes')}}</h3>
+            <div class="text-center">
+            {{for oc in open_classes:}}
+                {{if can_enroll(oc):}}
+                {{at_least_one_open_class = True}}
+                <a href="{{=URL('enroll', args=oc.id)}}">
+                <button class="btn btn-primary btn-block">
                     {{=T('Starting on')}}
                     {{=T("%s %dth") % (oc.start_date.strftime("%B"),oc.start_date.day)}}
                     <br>
-                    <strong>{{=T("You are already on this class!")}}</strong>
+                    <b>{{=T('Enroll now!')}}</b>
                 </button>
                 </a>
-            {{elif session.errors["max_qty"]:}}
-                <button class="btn btn-danger">
-                    {{=T('Starting on')}}
-                    {{=T("%s %dth") % (oc.start_date.strftime("%B"),oc.start_date.day)}}
-                    <br>
-                    <strong>{{=T("FULL!")}}</strong>
-                </button>
+                {{else:}}
+                    {{if session.errors["student"]:}}
+                    {{at_least_one_open_class = True}}
+                        <a href="{{=URL('my_class', args=oc.id)}}">
+                        <button class="btn btn-success btn-block">
+                            {{=T('Starting on')}}
+                            {{=T("%s %dth") % (oc.start_date.strftime("%B"),oc.start_date.day)}}
+                            <br>
+                            <strong>{{=T("You are already on this class!")}}</strong>
+                        </button>
+                        </a>
+                    {{elif session.errors["max_qty"]:}}
+                    {{at_least_one_open_class = True}}
+                        <button class="btn btn-danger btn-block">
+                            {{=T('Starting on')}}
+                            {{=T("%s %dth") % (oc.start_date.strftime("%B"),oc.start_date.day)}}
+                            <br>
+                            <strong>{{=T("FULL!")}}</strong>
+                        </button>
+                    {{pass}}
+                {{pass}}
             {{pass}}
-        {{pass}}
-    {{pass}}
-    {{pass}}
-    {{if not at_least_one_open_class:}}
-    <p>{{=T('Interested? Submit your email below to be notified for the next open class.')}}</p>
-    {{=interest_form.custom.begin}}
-        {{interest_form.elements('#interests_email')[0]['_placeholder']=T('Your email')}}
-        {{=interest_form.custom.widget.email}}
-        <br>
-        {{=interest_form.custom.submit}}
-    {{=interest_form.custom.end}}
-    {{pass}}
+            {{pass}}
+            {{if not at_least_one_open_class:}}
+            <p>{{=T('Interested? Submit your email below to be notified for the next open class.')}}</p>
+            {{=interest_form.custom.begin}}
+                {{interest_form.elements('#interests_email')[0]['_placeholder']=T('Your email')}}
+                {{=interest_form.custom.widget.email}}
+                <br>
+                {{=interest_form.custom.submit}}
+            {{=interest_form.custom.end}}
+            {{pass}}
+            </div>
+            
+        </div>
+    </div>
 </div>
-
-</div>  
