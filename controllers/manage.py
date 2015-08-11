@@ -63,7 +63,23 @@ def pick_type():
     if form.process().accepted:
         redirect(URL('new', args=[int(form.vars.type), request.args(0)], vars=request.vars))
     elif form.errors:
-        response.flash(T('Form has errors!'))
+        response.flash = T('Form has errors!')
+    return dict(form=form)
+
+@auth.requires(auth.has_membership('Teacher') or auth.has_membership('Admin'))
+def calendar():
+    dates = db(Date).select()
+    classes = Course(course_owner=auth.user.id).classes.select()
+    return dict(dates=dates,
+                classes=classes)
+
+@auth.requires(auth.has_membership('Teacher') or auth.has_membership('Admin'))
+def new_date():
+    form = SQLFORM(Date)
+    if form.process().accepted:
+        redirect(URL('calendar'))
+    elif form.errors:
+        response.flash = T('Form has errors!')
     return dict(form=form)
 
 ##################################################################################

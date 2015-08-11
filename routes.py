@@ -36,7 +36,8 @@ routers = {
                         'forum', 'topic', 'new_topic', 'calendar', 'announcements'],
             'manage': ['courses', 'classes', 'lessons', 'pick_type',
                         'new', 'edit', 'delete', 'generate_certificate',
-                        'send_certificate', 'preview_certificate', 'download_pdf'],
+                        'send_certificate', 'preview_certificate', 'download_pdf',
+                        'calendar', 'new_date'],
             'payments': ['shopping_cart', 'remove_from_shopping_cart', 
                         'register_order', 'pay_courses', 'paypal', 'ipn',
                         'success', 'history', 'details']

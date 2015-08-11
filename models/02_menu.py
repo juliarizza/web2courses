@@ -38,7 +38,8 @@ if auth.user:
 
 if auth.has_membership('Teacher') or auth.has_membership('Admin'):
 	response.menu.extend([
-		(T('Manage courses'), False, URL('manage', 'courses'), [])
+		(T('Manage courses'), False, URL('manage', 'courses'), []),
+		(T('My Calendar'), False, URL('manage', 'calendar'), [])
 		])
 
 if "auth" in locals(): auth.wikimenu() 

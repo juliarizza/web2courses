@@ -17,7 +17,7 @@ A manager system for a teacher to sell/provide courses and manage classes.
 * Track students completion of courses 
 * Make a .pdf certificate generator **DONE**
 * Make a billboard for teacher announcement **DONE**
-* Implement a beautiful theme
+* Implement a beautiful theme **DONE**
 * Configure routes **DONE**
 * Remove extra css, js and images that are not being used **DONE**
 
