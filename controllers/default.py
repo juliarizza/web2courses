@@ -28,6 +28,11 @@ def user():
         @auth.requires_permission('read','table name',record_id)
     to decorate functions that need access control
     """
+
+    if request.args(0) == 'register':
+        db.auth_user.bio.writable = db.auth_user.bio.readable = False
+        db.auth_user.avatar.writable = db.auth_user.avatar.readable = False
+
     return dict(form=auth())
 
 
@@ -89,8 +94,10 @@ def enroll():
 
 @auth.requires_login()
 def my_courses():
-    class_ids = db(Student.student == auth.user.id).select(Student.class_id)
-    classes = db(Class.id.belongs([x.class_id for x in class_ids])).select()
+    class_ids = db(Student.student == auth.user.id).select()
+    my_courses = db(Course.course_owner == auth.user.id).select()
+    classes = db(Class.id.belongs([x.class_id for x in class_ids])|\
+                Class.course.belongs([x.id for x in my_courses])).select()
     return dict(classes=classes)
 
 @auth.requires(lambda: enrolled_in_class(record_id=request.args(0, cast=int), record_type=1) | auth.has_membership("Admin"))
@@ -108,6 +115,8 @@ def lesson():
     if lesson.start_date > request.now.date():
         raise HTTP(404)
 
+    page = int(request.vars.page or 1)
+
     videos = lesson.videos.select()
     texts = lesson.texts.select()
     exercises = lesson.exercises.select()
@@ -115,18 +124,24 @@ def lesson():
     merged_records = itertools.chain(videos, texts, exercises)
     contents = sorted(merged_records, key=lambda record: record['place'])
 
+    if page <= 0 or page > len(contents):
+        raise HTTP(404)
+
     is_correct = {}
     if request.vars:
         keys = request.vars.keys()
         for key in keys:
-            q_id = int(key.split('_')[1])
-            question = Exercise(id=q_id)
-            if question.correct == int(request.vars[key]):
-                is_correct[key] = True
-            else:
-                is_correct[key] = False
+            if key != 'page':
+                q_id = int(key.split('_')[1])
+                question = Exercise(id=q_id)
+                if question.correct == int(request.vars[key]):
+                    is_correct[key] = True
+                else:
+                    is_correct[key] = False
+
     return dict(lesson=lesson,
-                contents=contents,
+                content=contents[page-1],
+                total_pages=len(contents),
                 is_correct=is_correct)
 
 @auth.requires(lambda: enrolled_in_class(record_id=request.args(0, cast=int), record_type=1) | auth.has_membership("Admin"))

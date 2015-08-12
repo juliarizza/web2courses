@@ -8,11 +8,11 @@
     <div class="thumbnail">
       <a href="{{=URL('my_class', args=my_class.id)}}"><img src="{{=URL('download', args=my_class.course.banner)}}" alt="Course image">
       <div class="caption"></a>
-        <a href="{{=URL('my_class', args=my_class.id)}}"><h3>{{=my_class.course.title}}</h3></a>
+        <a href="{{=URL('my_class', args=my_class.id)}}"><h3>{{=my_class.course.title}} <small>{{=T("Class %s") % my_class.id}}</small></h3></a>
         <p>{{=my_class.course.short_description}}</p>
          <div class="bottom-thumb">
           <hr>
-          <a href="{{=URL('my_class', args=my_class.id)}}" class="btn btn-primary btn-md" role="button">{{=T("View course")}}</a>
+          <a href="{{=URL('announcements', args=my_class.id)}}" class="btn btn-primary btn-md" role="button">{{=T("View course")}}</a>
          </div>
       </div>
     </div>

@@ -57,7 +57,7 @@
                 <a href="{{=URL('enroll', args=oc.id)}}">
                 <button class="btn btn-primary btn-block">
                     {{=T('Starting on')}}
-                    {{=T("%s %dth") % (oc.start_date.strftime("%B"),oc.start_date.day)}}
+                    {{=T("%d/%d") % (oc.start_date.day, oc.start_date.month)}}
                     <br>
                     <b>{{=T('Enroll now!')}}</b>
                 </button>
@@ -68,7 +68,7 @@
                         <a href="{{=URL('my_class', args=oc.id)}}">
                         <button class="btn btn-success btn-block">
                             {{=T('Starting on')}}
-                            {{=T("%s %dth") % (oc.start_date.strftime("%B"),oc.start_date.day)}}
+                            {{=T("%d/%d") % (oc.start_date.day, oc.start_date.month)}}
                             <br>
                             <strong>{{=T("You are already on this class!")}}</strong>
                         </button>
@@ -77,7 +77,7 @@
                     {{at_least_one_open_class = True}}
                         <button class="btn btn-danger btn-block">
                             {{=T('Starting on')}}
-                            {{=T("%s %dth") % (oc.start_date.strftime("%B"),oc.start_date.day)}}
+                            {{=T("%d/%d") % (oc.start_date.day, oc.start_date.month)}}
                             <br>
                             <strong>{{=T("FULL!")}}</strong>
                         </button>

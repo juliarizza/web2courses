@@ -6,6 +6,21 @@ table {
 	background-color: rgba(255, 255, 255, 1);
 }
 
+.panel-info {
+	border: 1px solid rgba(87, 102, 153, 1);
+}
+
+.panel-info .panel-heading {
+	background: rgba(87, 102, 153, 1) !important;
+	background-image: none !important;
+	border-color: rgba(87, 102, 153, 1) !important;;
+	color: rgba(255, 255, 255, 1);
+}
+
+.panel-info .panel-heading a {
+	color: rgba(255, 255, 255, 1);	
+}
+
 .btn-default {
 	background: rgba(249, 249, 249, 1) !important;
 	background-image: none !important;
@@ -185,6 +200,7 @@ table {
 	position: absolute;
 	top: 200px;
 	left: 200px;
+	color: rgba(230, 230, 230, 1);
 }
 
 .course-description {
@@ -239,4 +255,23 @@ table {
 
 .label-free {
 	background-color: rgba(87, 102, 153, 1);
+}
+
+.lesson-control {
+	position: absolute;
+	top: 40%;
+	font-size: 50px;
+	color: rgba(87, 102, 153, 1);
+}
+
+.lesson-control:hover {
+	color: rgba(108, 121, 168, 1)
+}
+
+.left.lesson-control {
+	left: 20px;
+}
+
+.right.lesson-control {
+	right: 20px;
 }

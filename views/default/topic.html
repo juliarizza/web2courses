@@ -3,16 +3,19 @@
 <a href="{{=URL('forum', args=topic.class_id)}}">Voltar</a>
 <br><br>
 
-<div class="panel panel-default">
+<div class="panel panel-default col-xs-12 col-sm-8 col-sm-offset-2">
   <div class="panel-body">
     <h2>{{=topic.title}} <small>por {{=topic.created_by.first_name}} {{=topic.created_by.last_name}}</small></h2>
     <p>{{=XML(topic.body)}}</p>
   </div>
 </div>
 
+<div class="clearfix"></div>
+
+<div class="col-xs-12 col-sm-8 col-sm-offset-2">
 <h2>{{=T("Replies")}} <span class="badge">{{=len(comments)}}</span></h2>
 {{for comment in comments:}}
-<div class="media">
+<div class="media panel panel-default" style="padding: 15px;">
   <div class="media-left">
       <img class="media-object" src="{{=URL('download', args=comment.created_by.avatar)}}" alt="{{=T('User avatar')}}" height="64" width="64">
   </div>
@@ -23,9 +26,11 @@
 </div>
 {{pass}}
 <br>
-<div class="panel panel-default">
+</div>
+
+<div class="panel panel-default col-xs-12 col-sm-8 col-sm-offset-2">
   <div class="panel-body">
-  	<h3>{{=T("Reply this user")}}</h3>
-  	{{=form}}
+    <h3>{{=T("Reply this user")}}</h3>
+    {{=form}}
   </div>
 </div>

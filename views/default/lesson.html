@@ -12,21 +12,29 @@
 </div>
 <br><br>
 
-{{for content in contents:}}
-<div class="panel panel-default">
+{{if total_pages > 1:}}
+<nav class="text-center">
+  <ul class="pagination pagination-lg">
+    {{for n in range(1, total_pages+1):}}
+      <li><a href="{{=URL('lesson', args=request.args, vars={'page': n})}}">{{=n}}</a></li>
+    {{pass}}
+  </ul>
+</nav>
+{{pass}}
+<div class="panel panel-default" style="position: relative; padding: 20px 70px;">
   <div class="panel-body">
   {{if content.lesson_type == 1:}}
   	{{if content.video_url:}}
-  	<center>
-  		<iframe width="853" height="480" src="{{=content.video_url}}?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>
-  	</center>
+  	<div class="embed-responsive embed-responsive-16by9">
+  		<iframe class="embed-responsive-item" width="853" height="480" src="{{=content.video_url}}?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>
+  	</div>
   	{{elif content.video_upload:}}
-  	<center>
-  	 <video width="853" height="480" controls>
-	  <source src="{{=URL('download', args=content.video_upload)}}">
-	  {{=T('Your browser does not support the video tag.')}}
-	</video>
-	</center> 
+  	<div class="embed-responsive embed-responsive-16by9">
+  	 <video class="embed-responsive-item" width="853" height="480" controls>
+	   <source src="{{=URL('download', args=content.video_upload)}}">
+	   {{=T('Your browser does not support the video tag.')}}
+  	 </video>
+  	</div> 
   	{{else:}}
   	<p><strong>{{=T("There was a problem with this video!")}}</strong></p>
   	<p>{{=T("We couldn't find any video here. Please, alert your instructor about this problem!")}}</p>
@@ -67,8 +75,15 @@
   	{{pass}}
   {{pass}}
   </div>
+
+  {{if request.vars.page and int(request.vars.page) != 1:}}
+  <a href="{{=URL('lesson', args=request.args, vars={'page':int(request.vars.page)-1})}}" class="left lesson-control"><span class="glyphicon glyphicon-chevron-left"></span></a>
+  {{pass}}
+  {{if (not request.vars.page and total_pages > 1) or (request.vars.page and int(request.vars.page) != total_pages):}}
+  <a href="{{=URL('lesson', args=request.args, vars={'page':int(request.vars.page or 1)+1})}}" class="right lesson-control"><span class="glyphicon glyphicon-chevron-right"></span></a>
+  {{pass}}
 </div>
-{{pass}}
+
 </div>
 
 </div>

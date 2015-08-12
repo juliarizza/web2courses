@@ -113,4 +113,4 @@ if db(db.auth_group).count() == 0:
     db.auth_group.insert(role="Teacher", description="Teachers group.")
     db.auth_group.insert(role="Admin", description="Admins group.")
     db.commit()
-auth.settings.everybody_group_id = 0
+auth.settings.everybody_group_id = 1

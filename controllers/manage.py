@@ -200,13 +200,16 @@ def send_certificate():
             bg_w, bg_h = certificate.size
             template_offset = (0, 700)
 
+            course_date = T("from %s to %s") % (my_class.start_date.strftime(str(T("%m-%d-%Y"))), my_class.end_date.strftime(str(T("%m-%d-%Y"))))
+            total_hours = T("in a total of %d hours.") % my_class.course.total_hours
+
             lines = []
             lines.append(u"%s" % T("This is to certify that"))
             lines.append(u"%s %s" % (student.student.first_name, student.student.last_name))
             lines.append(u"%s" % T("has satisfactorily completed the course"))
             lines.append(my_class.course.title.decode("utf-8"))
-            lines.append(u"%s" % T("from %s to %s" % (my_class.start_date.strftime("%s" % T("%B %d, %Y")), my_class.end_date.strftime("%s" % T("%B %d, %Y")))))
-            lines.append(u"%s" % T("in a total of %d hours." % my_class.course.total_hours))
+            lines.append(u"%s" % course_date.decode("utf-8"))
+            lines.append(u"%s" % total_hours.decode("utf-8"))
 
             total_height = 0
             for line in lines:
@@ -251,13 +254,16 @@ def preview_certificate():
         bg_w, bg_h = certificate.size
         template_offset = (0, 700)
 
+        course_date = T("from %s to %s") % (my_class.start_date.strftime(str(T("%m-%d-%Y"))), my_class.end_date.strftime(str(T("%m-%d-%Y"))))
+        total_hours = T("in a total of %d hours.") % my_class.course.total_hours
+
         lines = []
         lines.append(u"%s" % T("This is to certify that"))
         lines.append(u"STUDENT NAME")
         lines.append(u"%s" % T("has satisfactorily completed the course"))
         lines.append(my_class.course.title.decode("utf-8"))
-        lines.append(u"%s" % T("from %s to %s" % (my_class.start_date.strftime("%s" % T("%B %d, %Y")), my_class.end_date.strftime("%s" % T("%B %d, %Y")))))
-        lines.append(u"%s" % T("in a total of %d hours." % my_class.course.total_hours))
+        lines.append(u"%s" % course_date.decode("utf-8"))
+        lines.append(u"%s" % total_hours.decode("utf-8"))
 
         total_height = 0
         for line in lines:
