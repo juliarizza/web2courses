@@ -26,16 +26,19 @@ Student.student.requires = IS_IN_DB(db, "auth_user.id", "%(first_name)s %(last_n
 Student.class_id.requires = IS_IN_DB(db, "classes.id", "%(course)s - %(id)d")
 
 ## modules table
-Module.class_id.requires = IS_IN_DB(db, "classes.id", "%(course)s - %(start_date)s")
-Module.class_id.writable = Module.class_id.readable = False
+Module.course_id.requires = IS_IN_DB(db, "courses.id")
+Module.course_id.writable = Module.course_id.readable = False
 Module.place.writable = Module.place.readable = False
 
 ## single lessons table
 Lesson.title.requires = IS_NOT_EMPTY()
-Lesson.start_date.requires = IS_DATE()
 Lesson.lesson_module.requires = IS_IN_DB(db, "modules.id", "%(title)s")
 Lesson.lesson_module.writable = Lesson.lesson_module.readable = False
 Lesson.place.writable = Lesson.place.readable = False
+
+## schedule lessons table
+Schedule_Lesson.lesson_id.requires = IS_IN_DB(db, "lessons.id")
+Schedule_Lesson.release_date.requires = IS_DATE()
 
 ## video lessons table
 Video.lesson.requires = IS_IN_DB(db, "lessons.id", "%(title)s")

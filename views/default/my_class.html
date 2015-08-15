@@ -16,7 +16,7 @@
 <h2>{{=T("Modules")}}</h2>
 	<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
 	{{for module in modules:}}
-	{{if module.lessons(Lesson.start_date <= request.now.date()).count() > 0:}}
+	{{if db(Schedule_Lesson.lesson_id.belongs([l.id for l in module.lessons.select()])&(Schedule_Lesson.release_date <= request.now.date())).count() > 0:}}
 	  <div class="panel panel-default">
 	    <div class="panel-heading" role="tab" id="heading{{=module.id}}">
 	      <h4 class="panel-title">
@@ -32,11 +32,12 @@
 	      <div class="panel-body">
 	      <p>{{=XML(module.description)}}</p>
 	    	<div class="panel-group" id="lessons_{{=module.id}}" role="tablist" aria=multiselectable="true">
-	    		{{for lesson in module.lessons(Lesson.start_date <= request.now.date()).select(orderby=Lesson.place):}}
+	    		{{lessons = module.lessons.select(orderby=Lesson.place)}}
+	    		{{for lesson in [l for l in lessons if l.schedule_lessons.select().first().release_date <= request.now.date()]:}}
 	    			<div class="panel panel-default">
 	    				<div class="panel-heading" role="tab" id="lessonHeading{{=lesson.id}}">
 	    					<h4 class="panel-title">
-	    						<a href="{{=URL('lesson', args=lesson.id)}}">
+	    						<a href="{{=URL('lesson', args=[lesson.id, my_class.id])}}">
 	    							{{=lesson.title}}
 	    						<div class="pull-right">
 	    							<i class="glyphicon glyphicon-menu-right"></i><i class="glyphicon glyphicon-menu-right"></i>

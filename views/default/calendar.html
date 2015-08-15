@@ -574,7 +574,7 @@ $(document).ready(function(){
       {{for lesson in lessons:}}
       {
         title: "{{=lesson.title}}",
-        start: "{{=lesson.start_date}}",
+        start: "{{=lesson.schedule_lessons.select().first().release_date}}",
         color: "#7dd0bd"
       },
       {{pass}}

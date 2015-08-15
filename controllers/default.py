@@ -104,15 +104,17 @@ def my_courses():
 def my_class():
     class_id = request.args(0, cast=int)
     my_class = Class(id=class_id)
-    modules = db(Module.class_id == class_id).select()
+    my_course = my_class.course
+    modules = db(Module.course_id == my_course).select()
     return dict(my_class=my_class, 
                 modules=modules)
 
 @auth.requires(lambda: enrolled_in_class(record_id=request.args(0, cast=int), record_type=2) | auth.has_membership("Admin"))
 def lesson():
     lesson_id = request.args(0, cast=int)
+    class_id = request.args(1, cast=int)
     lesson = Lesson(id=lesson_id)
-    if lesson.start_date > request.now.date():
+    if db(Schedule_Lesson.lesson_id == lesson_id).select().first().release_date > request.now.date():
         raise HTTP(404)
 
     page = int(request.vars.page or 1)
@@ -142,7 +144,8 @@ def lesson():
     return dict(lesson=lesson,
                 content=contents[page-1],
                 total_pages=len(contents),
-                is_correct=is_correct)
+                is_correct=is_correct,
+                class_id=class_id)
 
 @auth.requires(lambda: enrolled_in_class(record_id=request.args(0, cast=int), record_type=1) | auth.has_membership("Admin"))
 def forum():
@@ -180,7 +183,7 @@ def calendar():
     class_id = request.args(0, cast=int)
     dates = db((Date.class_id == class_id)|(Date.class_id == None)).select()
     my_class = Class(id=class_id)
-    modules = db(Module.class_id == class_id).select()
+    modules = db(Module.course_id == my_class.course).select()
     lessons = []
     for module in modules:
         for lesson in module.lessons.select():

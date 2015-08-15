@@ -10,9 +10,11 @@ def enrolled_in_class(record_id, record_type):
 			return False
 	elif record_type == 2:
 		lesson = Lesson(id=record_id)
+		classes = db(Class.course==lesson.lesson_module.course_id).select() or []
 		if db((Student.class_id == lesson.lesson_module.class_id)\
-			&(Student.student == auth.user.id)).count()\
-			|is_course_owner(lesson.lesson_module.class_id):
+			&(Student.student == auth.user.id)\
+			|(Student.class_id.belongs([c.id for c in classes]))
+			).count():
 			return True
 		else:
 			return False

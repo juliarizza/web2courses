@@ -33,16 +33,21 @@ Module = db.define_table("modules",
                Field("title", label=T('Title')),
                Field("description", "text", widget=ckeditor.widget, label=T('Description')),
                Field("place", "integer", label=T('Place')),
-               Field("class_id", "reference classes", label=T('Class Id'))
+               Field("course_id", "reference courses", label=T('Course Id'))
               )
 
 ## single lesson table
 Lesson = db.define_table("lessons",
                 Field("title", label=T('Title')),
                 Field("lesson_module", "reference modules", label=T('Module')),
-                Field("place", "integer", label=T('Place')),
-                Field("start_date", "date", label=T('Start Date'))
+                Field("place", "integer", label=T('Place'))
                )
+
+## schedule lessons table
+Schedule_Lesson = db.define_table("schedule_lessons",
+                Field("lesson_id", "reference lessons", label=T('Lesson Id')),
+                Field("release_date", "date", label=T('Release Date'))
+              )
 
 ## video lesson table
 Video = db.define_table("videos",

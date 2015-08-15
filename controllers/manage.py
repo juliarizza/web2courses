@@ -39,7 +39,7 @@ def lessons():
     class_id = request.args(0,cast=int)
 
     my_class = Class(id=class_id)
-    modules = db(Module.class_id == class_id).select()
+    modules = db(Module.course_id == my_class.course).select()
 
     all_lessons = {}
     for module in modules:
@@ -62,6 +62,26 @@ def pick_type():
         )
     if form.process().accepted:
         redirect(URL('new', args=[int(form.vars.type), request.args(0)], vars=request.vars))
+    elif form.errors:
+        response.flash = T('Form has errors!')
+    return dict(form=form)
+
+@auth.requires(auth.has_membership('Teacher') or auth.has_membership('Admin'))
+def schedule_lesson():
+    Schedule_Lesson.lesson_id.default = request.args(1, cast=int)
+    Schedule_Lesson.lesson_id.writable = Schedule_Lesson.lesson_id.readable = False
+    form = SQLFORM(Schedule_Lesson)
+    if form.process().accepted:
+        redirect(URL('lessons', args=request.args(0)))
+    elif form.errors:
+        response.flash = T('Form has errors!')
+    return dict(form=form)
+
+@auth.requires(auth.has_membership('Teacher') or auth.has_membership('Admin'))
+def edit_lesson_date():
+    form = SQLFORM(Schedule_Lesson, request.args(1, cast=int), fields=['release_date'])
+    if form.process().accepted:
+        redirect(URL('lessons', args=request.args(0)))
     elif form.errors:
         response.flash = T('Form has errors!')
     return dict(form=form)
@@ -96,8 +116,9 @@ def new():
     if table_type == 0:
         Course.course_owner.default == auth.user.id
     elif table_type == 2:
-        Module.class_id.default = request.args(1,cast=int)
-        Module.place.default = db(Module.class_id == request.args(1,cast=int)).count()
+        module_class = Class(id=request.args(1, cast=int))
+        Module.course_id.default = module_class.course
+        Module.place.default = db(Module.course_id == module_class.course).count()
     elif table_type == 3:
         Lesson.lesson_module.default = request.args(1,cast=int)
         Lesson.place.default = db(Lesson.lesson_module == request.args(1,cast=int)).count()
