@@ -37,7 +37,8 @@ routers = {
             'manage': ['courses', 'classes', 'lessons', 'pick_type',
                         'new', 'edit', 'delete', 'generate_certificate',
                         'send_certificate', 'preview_certificate', 'download_pdf',
-                        'calendar', 'new_date'],
+                        'calendar', 'new_date', 'schedule_lesson', 'edit_lesson_date',
+                        'interests'],
             'payments': ['shopping_cart', 'remove_from_shopping_cart', 
                         'register_order', 'pay_courses', 'paypal', 'ipn',
                         'success', 'history', 'details']
