@@ -31,9 +31,10 @@
 				<td>{{=course.max_students}}</td>
 				<td>{{=course.total_hours}}</td>
 				<td>
-					<a href="{{=URL('classes', vars={'course': course.id})}}"><i class="glyphicon glyphicon-list-alt"></i></a>
-					<a href="{{=URL('edit', args=[0, course.id], vars={'next':URL('courses')})}}"><i class="glyphicon glyphicon-pencil"></i></a>
-					<a href="{{=URL('delete', args=[0, course.id], vars={'next':URL('courses')})}}"><i class="glyphicon glyphicon-trash"></i></a>
+					<a href="{{=URL('classes', vars={'course': course.id})}}" title="{{=T('Classes')}}"><i class="glyphicon glyphicon-list-alt"></i></a>
+					<a href="{{=URL('interests', args=course.id)}}" title="{{=T('Interests')}}"><i class="glyphicon glyphicon-bullhorn"></i></a>
+					<a href="{{=URL('edit', args=[0, course.id], vars={'next':URL('courses')})}}" title="{{=T('Edit')}}"><i class="glyphicon glyphicon-pencil"></i></a>
+					<a href="{{=URL('delete', args=[0, course.id], vars={'next':URL('courses')})}}" title="{{=T('Delete')}}"><i class="glyphicon glyphicon-trash"></i></a>
 				</td>
 			</tr>
 			{{pass}}

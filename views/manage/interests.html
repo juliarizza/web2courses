@@ -1,0 +1,25 @@
+{{extend 'layout.html'}}
+
+<div class="row">
+	<div class="col-xs-12 col-sm-8 col-sm-offset-2">
+	<h1>{{=T('Interests')}}</h1>
+	<p>{{=T('These people are interested in your course %s') % course.title}}</p>
+	<br>
+	<table class="table table-striped">
+		<thead>
+			<tr>
+				<th>{{=T('E-mail')}}</th>
+				<th>{{=T('Registered On')}}</th>
+			</tr>
+		</thead>
+		<tbody>
+			{{for interest in interests:}}
+			<tr>
+				<td>{{=interest.email}}</td>
+				<td>{{=interest.created_on}}</td>
+			</tr>
+			{{pass}}
+		</tbody>
+	</table>
+	</div>
+</div>

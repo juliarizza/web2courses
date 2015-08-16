@@ -111,7 +111,8 @@ Comment = db.define_table("comments",
 ## course interest table
 Interest = db.define_table("interests",
              Field("email", label=T('E-mail')),
-             Field("course", "reference courses", label=T('Course'))
+             Field("course", "reference courses", label=T('Course')),
+             auth.signature
              )
 
 ## teacher's announcement table

@@ -79,7 +79,8 @@ Comment.created_by.requires = IS_IN_DB(db, "auth_user.id", "%(first_name)s %(las
 Comment.post.requires = IS_IN_DB(db, "forum.id", "%(title)s")
 
 ## courses interest table
-Interest.email.requires = IS_EMAIL()
+Interest.email.requires = [IS_EMAIL(),
+						   IS_NOT_IN_DB(db, 'interests.email', error_message=T('You are already registered!'))]
 Interest.course.requires = IS_IN_DB(db, 'courses.id', '%(title)s')
 
 ## announcements table

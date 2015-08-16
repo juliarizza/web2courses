@@ -102,6 +102,13 @@ def new_date():
         response.flash = T('Form has errors!')
     return dict(form=form)
 
+@auth.requires(auth.has_membership('Teacher') or auth.has_membership('Admin'))
+def interests():
+    course = Course(id=request.args(0, cast=int))
+    interests = db(Interest.course == course.id).select()
+    return dict(interests=interests,
+                course=course)
+
 ##################################################################################
 ####                                                                          ####
 ####                   CRUD PAGES FOR COURSES, CLASSES, ETC                   ####
