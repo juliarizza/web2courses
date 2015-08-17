@@ -122,12 +122,15 @@ def new():
 
     if table_type == 0:
         Course.course_owner.default == auth.user.id
+        Course.course_owner.writable = Course.course_owner.readable = False
     elif table_type == 2:
         module_class = Class(id=request.args(1, cast=int))
         Module.course_id.default = module_class.course
         Module.place.default = db(Module.course_id == module_class.course).count()
+        Module.course_id.writable = Module.course_id.readable = False
     elif table_type == 3:
         Lesson.lesson_module.default = request.args(1,cast=int)
+        Lesson.lesson_module.writable = Lesson.lesson_module.readable = False
         Lesson.place.default = db(Lesson.lesson_module == request.args(1,cast=int)).count()
     elif table_type in [4, 5, 6]:
         lesson = Lesson(id=request.args(1, cast=int))

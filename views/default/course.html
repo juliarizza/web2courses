@@ -33,7 +33,7 @@
                     <span class="label label-success">R${{='%.2f' % float(course.price-course.discount)}}</span>
                     <small><span class="promo">{{=T('%d%% OFF' % float(course.discount/course.price*100))}}</span></small>
                     </h4>
-                    {{elif int(course.price) == 0:}}
+                    {{elif float(course.price) == 0.0:}}
                     <h4>
                     <span class="label label-free">{{=T('FREE')}}</span>
                     </h4>
