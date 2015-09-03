@@ -146,6 +146,18 @@ def new():
             Exercise.lesson.default = request.args(1,cast=int)
     elif table_type == 7:
         Announcement.class_id.default = request.args(1, cast=int)
+        my_class = Class(id=request.args(1, cast=int))
+        students = db(Student.class_id == request.args(1, cast=int)).select()
+        mails = [student.student.email for student in students]
+        url = URL('default', 'announcements', args=request.args(1, cast=int), host=True, scheme=True)
+        message = T('There is a new announcement on %s class.' % my_class.course.title)
+        message += '\n'
+        message += T('You can access it here: %s' % url)
+        mail.send(
+            to = mails,
+            subject = T('New announcement on %s class' % my_class.course.title),
+            message = message
+            )
 
     form = SQLFORM(tables[table_type]).process(next=request.vars.next)
     return dict(form=form)
