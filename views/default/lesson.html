@@ -24,10 +24,12 @@
 <div class="panel panel-default" style="position: relative; padding: 20px 70px;">
   <div class="panel-body">
   {{if content.lesson_type == 1:}}
-  	{{if content.video_url:}}
+  	{{if content.video_url and ('youtube' in content.video_url or 'youtu.be' in content.video_url):}}
   	<div class="embed-responsive embed-responsive-16by9">
   		<iframe class="embed-responsive-item" width="853" height="480" src="{{=content.video_url}}?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>
   	</div>
+    {{elif content.video_url and ('vimeo' in content.video_url):}}
+    <center><iframe src="https://player.vimeo.com/video/{{=content.video_url.split('/')[-1]}}?color=ffffff&title=0&byline=0&portrait=0" width="853" height="480" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe></center>
   	{{elif content.video_upload:}}
   	<div class="embed-responsive embed-responsive-16by9">
   	 <video class="embed-responsive-item" width="853" height="480" controls>
