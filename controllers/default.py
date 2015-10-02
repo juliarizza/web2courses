@@ -150,7 +150,7 @@ def lesson():
 @auth.requires(lambda: enrolled_in_class(record_id=request.args(0, cast=int), record_type=1) | auth.has_membership("Admin"))
 def forum():
     class_id = request.args(0, cast=int)
-    topics = db(Forum.class_id == class_id).select()
+    topics = db(Forum.class_id == class_id).select(orderby=~Forum.created_on)
     return dict(topics=topics,
                 class_id=class_id)
 
