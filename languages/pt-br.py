@@ -388,6 +388,7 @@
 'We just received your order number %s:\n': 'Acabamos de receber seu pedido de número %s:',
 'We just received your order number e760809e:\n': '',
 'We received your order!': 'Recebemos seu pedido!',
+'Web applications com web2py Certificate': 'Web applications com web2py Certificate',
 'Web2py': 'Web2py',
 'Welcome': 'Bem-vindo',
 'Welcome %s': 'Bem-vindo %s',
@@ -409,5 +410,6 @@
 'You visited the url %s': 'Você acessou a url %s',
 'Your browser does not support the video tag.': 'O seu browser não suporta a tag de vídeo.',
 'Your Certificate of Conclusion of %s is attached to this email. For more info, contact your teacher.\n\nCongratulations!': 'Seu Certificado de Conclusão do curso %s está anexado a este email. Para mais informações, entre em contato com o seu professor. Parabéns!',
+'Your Certificate of Conclusion of Web applications com web2py is attached to this email. For more info, contact your teacher.\n\nCongratulations!': 'Your Certificate of Conclusion of Web applications com web2py is attached to this email. For more info, contact your teacher.\n\nCongratulations!',
 'Your email': 'Seu email',
 }

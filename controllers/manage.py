@@ -248,7 +248,7 @@ def send_certificate():
 
             lines = []
             lines.append(u"%s" % T("This is to certify that"))
-            lines.append(u"%s %s" % (student.student.first_name, student.student.last_name))
+            lines.append(u"%s %s" % (student.student.first_name.decode("utf-8"), student.student.last_name.decode("utf-8")))
             lines.append(u"%s" % T("has satisfactorily completed the course"))
             lines.append(my_class.course.title.decode("utf-8"))
             lines.append(u"%s" % course_date.decode("utf-8"))
