@@ -16,6 +16,7 @@ Course.course_owner.requires = IS_IN_DB(db, 'auth_user.id', "%(email)s")
 ## classes table
 Class.start_date.requires = IS_DATE()
 Class.end_date.requires = IS_DATE()
+Class.available_until.requires = IS_EMPTY_OR(IS_DATE())
 Class.course.requires = IS_IN_DB(db, "courses.id", "%(title)s")
 Class.status.requires = IS_IN_SET(class_status)
 Class.status.default = 3

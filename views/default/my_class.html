@@ -11,9 +11,9 @@
 	  	<a href="{{=URL('calendar', args=my_class.id)}}"><button type="button" class="btn btn-default">{{=T('Calendar')}}</button></a>
 	</div>
 </div>
-
 <div class="col-md-8 col-sm-12">
 <h2>{{=T("Modules")}}</h2>
+	{{if not my_class.available_until or my_class.available_until >= request.now.date():}}
 	<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
 	{{for module in modules:}}
 	{{if db((Schedule_Lesson.lesson_id.belongs([l.id for l in module.lessons.select()]))&(Schedule_Lesson.class_id == my_class.id)&(Schedule_Lesson.release_date <= request.now.date())).count() > 0:}}
@@ -65,6 +65,16 @@
 	  {{pass}}
 	 {{pass}}
 	</div>
+	{{else:}}
+	<div class="panel panel-danger">
+			<div class="panel-heading">
+				<h3 class="panel-title" style="display: inline;">{{=T("This class reached the limit date")}}</h3>
+			</div>
+			<div class="panel-body">
+				{{=T("Now, you won't be able to see the lessons anymore. But the forum, announcements and other resources are still available.")}}
+			</div>
+		</div>
+	{{pass}}
 </div>
 
 </div>

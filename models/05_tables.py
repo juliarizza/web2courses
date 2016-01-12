@@ -19,6 +19,7 @@ Class = db.define_table("classes",
                         Field("course", "reference courses", label=T('Course')),
                         Field("start_date", "date", label=T('Start Date')),
                         Field("end_date", "date", label=T('End Date')),
+                        Field("available_until", "date", label=T('Available Until')),
                         Field("status", label=T('Status'))
                        )
 

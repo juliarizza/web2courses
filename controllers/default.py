@@ -68,6 +68,7 @@ def course():
     course_id = request.args(0, cast=int)
     course = Course(id=course_id)
     open_classes = course.classes(Class.status == 3).select()
+    limited_classes = [c for c in open_classes if c.available_until]
     
     Interest.course.default = course_id
     Interest.course.readable = Interest.course.writable = False
@@ -80,6 +81,7 @@ def course():
     return dict(
         course=course,
         open_classes=open_classes,
+        limited_classes=limited_classes,
         interest_form=interest_form)
 
 def enroll():

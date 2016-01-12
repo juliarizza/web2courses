@@ -31,7 +31,7 @@
                     {{if course.discount:}}
                     <h4>
                     <span class="label label-success">R${{='%.2f' % float(course.price-course.discount)}}</span>
-                    <small><span class="promo">{{=T('%d%% OFF' % float(course.discount/course.price*100))}}</span></small>
+                    <small><span class="promo">{{=T('%d%% OFF') % float(course.discount/course.price*100)}}</span></small>
                     </h4>
                     {{elif float(course.price) == 0.0:}}
                     <h4>
@@ -57,7 +57,7 @@
                 <a href="{{=URL('enroll', args=oc.id)}}">
                 <button class="btn btn-primary btn-block">
                     {{=T('Starting on')}}
-                    {{=T("%d/%d") % (oc.start_date.day, oc.start_date.month)}}
+                    {{=T("%02d/%02d") % (oc.start_date.day, oc.start_date.month)}}
                     <br>
                     <b>{{=T('Enroll now!')}}</b>
                 </button>
@@ -68,7 +68,7 @@
                         <a href="{{=URL('my_class', args=oc.id)}}">
                         <button class="btn btn-success btn-block">
                             {{=T('Starting on')}}
-                            {{=T("%d/%d") % (oc.start_date.day, oc.start_date.month)}}
+                            {{=T("%02d/%02d") % (oc.start_date.day, oc.start_date.month)}}
                             <br>
                             <strong>{{=T("You are already on this class!")}}</strong>
                         </button>
@@ -77,7 +77,7 @@
                     {{at_least_one_open_class = True}}
                         <button class="btn btn-danger btn-block">
                             {{=T('Starting on')}}
-                            {{=T("%d/%d") % (oc.start_date.day, oc.start_date.month)}}
+                            {{=T("%02d/%02d") % (oc.start_date.day, oc.start_date.month)}}
                             <br>
                             <strong>{{=T("FULL!")}}</strong>
                         </button>
@@ -96,6 +96,23 @@
             {{pass}}
             </div>
             
+            {{if limited_classes:}}
+            <hr />
+            <div class="alert alert-danger">
+                <b>{{=T('The following classes have a limit date of conclusion:')}}</b>
+                <ol>
+                    {{for c in limited_classes:}}
+                    <li>
+                    {{=T('Starting on')}}
+                    {{=T("%02d/%02d") % (c.start_date.day, c.start_date.month)}} ({{=T('limited to')}} 
+                    {{=T("%02d/%02d") % (c.available_until.day, c.available_until.month)}})
+                    </li>
+                    {{pass}}
+                </ol>
+                <small>{{=T("This means that, after the limit date, you won't be able to see the lessons anymore. Forum, announcements and other resources will still be available.")}}</small>
+            </div>
+            {{pass}}
+
         </div>
     </div>
 </div>
