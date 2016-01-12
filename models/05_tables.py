@@ -46,6 +46,7 @@ Lesson = db.define_table("lessons",
 ## schedule lessons table
 Schedule_Lesson = db.define_table("schedule_lessons",
                 Field("lesson_id", "reference lessons", label=T('Lesson Id')),
+                Field("class_id", "reference classes", label=T('Class Id')),
                 Field("release_date", "date", label=T('Release Date'))
               )
 

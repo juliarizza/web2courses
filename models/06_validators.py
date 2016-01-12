@@ -38,6 +38,7 @@ Lesson.place.writable = Lesson.place.readable = False
 
 ## schedule lessons table
 Schedule_Lesson.lesson_id.requires = IS_IN_DB(db, "lessons.id")
+Schedule_Lesson.class_id.requires = IS_IN_DB(db, "classes.id")
 Schedule_Lesson.release_date.requires = IS_DATE()
 
 ## video lessons table

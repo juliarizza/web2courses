@@ -16,7 +16,7 @@
 <h2>{{=T("Modules")}}</h2>
 	<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
 	{{for module in modules:}}
-	{{if db(Schedule_Lesson.lesson_id.belongs([l.id for l in module.lessons.select()])&(Schedule_Lesson.release_date <= request.now.date())).count() > 0:}}
+	{{if db((Schedule_Lesson.lesson_id.belongs([l.id for l in module.lessons.select()]))&(Schedule_Lesson.class_id == my_class.id)&(Schedule_Lesson.release_date <= request.now.date())).count() > 0:}}
 	  <div class="panel panel-default">
 	    <div class="panel-heading" role="tab" id="heading{{=module.id}}">
 	      <h4 class="panel-title">
@@ -33,7 +33,16 @@
 	      <p>{{=XML(module.description)}}</p>
 	    	<div class="panel-group" id="lessons_{{=module.id}}" role="tablist" aria=multiselectable="true">
 	    		{{lessons = module.lessons.select(orderby=Lesson.place)}}
-	    		{{for lesson in [l for l in lessons if l.schedule_lessons.select().first().release_date <= request.now.date()]:}}
+	    		{{
+	    		available_lessons = []
+	    		for l in lessons:
+	    			this_schedule = db((Schedule_Lesson.lesson_id == l.id)&(Schedule_Lesson.class_id == my_class.id)).select().first()
+	    			if this_schedule and this_schedule.release_date <= request.now.date():
+	    			    available_lessons.append(l)
+	    			    pass
+	    		pass
+	    		}}
+	    		{{for lesson in available_lessons:}}
 	    			<div class="panel panel-default">
 	    				<div class="panel-heading" role="tab" id="lessonHeading{{=lesson.id}}">
 	    					<h4 class="panel-title">

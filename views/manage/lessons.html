@@ -37,13 +37,14 @@
     						<a role="button" data-toggle="collapse" data-parent="lessons_{{=module.id}}" href="#lesson{{=lesson.id}}" aria-expanded="false" aria-controls="lesson{{=lesson.id}}">
     							{{=lesson.title}}
     							<div class="pull-right">
-    							{{if lesson.schedule_lessons.count() == 0:}}
+    							{{if db((Schedule_Lesson.lesson_id == lesson.id)&(Schedule_Lesson.class_id == my_class.id)).count() == 0:}}
     							<a href="{{=URL('schedule_lesson', args=[my_class.id, lesson.id])}}">
     								<i class="glyphicon glyphicon-calendar" style="color: red;"></i>
     							</a>
     							{{else:}}
-    							<small>{{=T('Lesson scheduled for:')}} {{=lesson.schedule_lessons.select().first().release_date}}</small>
-    							<a href="{{=URL('edit_lesson_date', args=[my_class.id, lesson.schedule_lessons.select().first().id])}}">
+                                {{this_schedule = db((Schedule_Lesson.lesson_id == lesson.id)&(Schedule_Lesson.class_id == my_class.id)).select().first()}}
+    							<small>{{=T('Lesson scheduled for:')}} {{=this_schedule.release_date}}</small>
+    							<a href="{{=URL('edit_lesson_date', args=[my_class.id, this_schedule.id])}}">
     								<i class="glyphicon glyphicon-calendar"></i>
     							</a>
     							{{pass}}

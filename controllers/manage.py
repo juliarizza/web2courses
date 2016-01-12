@@ -69,7 +69,9 @@ def pick_type():
 @auth.requires(auth.has_membership('Teacher') or auth.has_membership('Admin'))
 def schedule_lesson():
     Schedule_Lesson.lesson_id.default = request.args(1, cast=int)
+    Schedule_Lesson.class_id.default = request.args(0, cast=int)
     Schedule_Lesson.lesson_id.writable = Schedule_Lesson.lesson_id.readable = False
+    Schedule_Lesson.class_id.writable = Schedule_Lesson.class_id.readable = False
     form = SQLFORM(Schedule_Lesson)
     if form.process().accepted:
         redirect(URL('lessons', args=request.args(0)))
