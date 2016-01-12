@@ -121,7 +121,7 @@ def new():
     table_type = request.args(0,cast=int)
 
     if table_type == 0:
-        Course.course_owner.default == auth.user.id
+        Course.course_owner.default = auth.user.id
         Course.course_owner.writable = Course.course_owner.readable = False
     elif table_type == 2:
         module_class = Class(id=request.args(1, cast=int))

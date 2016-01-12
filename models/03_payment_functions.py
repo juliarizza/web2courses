@@ -5,7 +5,7 @@ from uuid import uuid4
 ## tells if the user can enroll or not in a class
 def can_enroll(record):
 	student_qty = db(Student.class_id == record.id).count()
-	query_1 = (student_qty < record.course.max_students or record.course.max_students == 0)
+	query_1 = (student_qty <= record.course.max_students or record.course.max_students == 0)
 	query_2 = (int(record.status) == 3)
 	query_3 = (record.start_date >= request.now.date())
 	query_4 = ((auth.user and not Student(class_id=record.id, student=auth.user.id)) or not auth.user)
@@ -26,7 +26,7 @@ def can_enroll(record):
 			session.errors["student"] = True
 		return False
 
-## calculates the total ammount of a order
+## calculates the total ammount of an order
 def total_amount(record):
 	total = 0
 	for cart_class in record.products:
@@ -40,7 +40,6 @@ def generate_token():
 		token = str(uuid4())[:8]
 	return token
 
-
 ## creates a log file in the appointed path
 def log_in_file(msg, path='/tmp/ipngenerallog.txt'):
 	with open(path, "a") as log:
@@ -53,4 +52,8 @@ def write_logs(request):
 	message += "\nIPN Received\n"
 	message += "ARGS: \n" + str(request.args) + "\n"
 	message += "VARS: \n" + str(request.vars) + "\n"
-	log_in_file(message)
+	if request.is_local:
+		log_in_file(message)
+	else:
+		## common path for log files
+		log_in_file(message, path='/var/log/ipngenerallog.txt')

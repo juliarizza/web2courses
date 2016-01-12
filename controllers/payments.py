@@ -49,7 +49,7 @@ def register_order():
 	for class_id in session.cart:
 		cart_class = Class(id=int(class_id))
 		if not can_enroll(cart_class):
-			session.flash = T('You are already enrolled in this class to %s, so we removed it from your shopping cart.' % cart_class.course.title)
+			session.flash = T('You are already enrolled in this class to %s, so we removed it from your shopping cart.') % cart_class.course.title
 			session.cart.remove(class_id)
 			redirect(URL('shopping_cart'))
 
@@ -62,11 +62,15 @@ def register_order():
 	session.order = order
 	session.cart = []
 
-	message = T("We just received your order number %s:\n" % order.token)
+	message = T("We just received your order number %s:") % order.token
 	for product in order.products:
-		message += T("- %s from %s to %s\n" % (product.course.title, product.start_date, product.end_date))
-	message += T("Amount: R$%.2f\n" % order.amount)
-	message += T("\nWe will wait and let you know when your payment is confirmed.\n")
+		message += '\n'
+		message += T("- %s from %s to %s") % (product.course.title, product.start_date, product.end_date)
+	message += '\n'
+	message += T("Amount: R$%.2f") % order.amount
+	message += '\n\n'
+	message += T("We will wait and let you know when your payment is confirmed.")
+	message += '\n'
 	message += T("Thank you for your purchase!")
 
 	mail.send(to=order.user_id.email,
@@ -101,16 +105,19 @@ def pay_courses():
 		session.pending = pending
 		redirect(URL('success'))
 
-		message = T('We just confirmed your payment for order number %s.\n' % order.token)
-		message += T('The total amount was R$%.2f.\n' % order.amount)
-		message += T('You can check your payment history after login in to your profile.\n')
-		message += T('\nThank you!')
+		message = T('We just confirmed your payment for order number %s.') % order.token
+		message += '\n'
+		message += T('The total amount was R$%.2f.') % order.amount
+		message += '\n'
+		message += T('You can check your payment history after login in to your profile.')
+		message += '\n\n'
+		message += T('Thank you!')
 		mail.send(to=order.user_id.email,
 				subject=T("Payment confirmed!"),
 				message = message
 				)
 	else:
-		pending = Pending.insert(order_id = session.order)
+		pending = Pending.insert(order_id = order.id)
 		session.pending = pending
 		redirect(URL('paypal'))
 
@@ -168,26 +175,36 @@ def ipn():
 		pending.update_record(confirmed=True)
 		Order(id=pending.order_id).update_record(status=2)
 
-		message = T('We just confirmed your payment for order number %s.\n' % pending.order_id.token)
-		message += T('The total amount was R$%.2f.\n' % pending.order_id.amount)
-		message += T('You can check your payment history after login in to your profile.\n')
-		message += T('\nThank you!')
+		message = T('We just confirmed your payment for order number %s.') % pending.order_id.token
+		message += '\n'
+		message += T('The total amount was R$%.2f.') % pending.order_id.amount
+		message += '\n'
+		message += T('You can check your payment history after login in to your profile.')
+		message += '\n\n'
+		message += T('Thank you!')
 		mail.send(to=pending.order_id.user_id.email,
 				subject=T("Payment confirmed!"),
 				message = message
 				)
 	else:
-		path = '/tmp/ipn_not_completed.txt'
+		if request.is_local:
+			path = '/tmp/ipn_not_completed.txt'
+		else:
+			## common path for logs
+			path = '/var/log/ipn_not_completed.txt'
 		message = '-'*80
 		message += '\nIPN NOT COMPLETED\n'
 		message += str(request.vars)
 		message += '\n'
 		log_in_file(message, path)
 		Order(id=pending.order_id).update_record(status=3)
-		mail_message = T('There was a problem with your payment!\n')
-		mail_message += T("\nSomething happened and we couldn't verify your payment.\n")
-		mail_message += T("If you're sure you paid the order, please contact us. Otherwise, try to pay again later.\n")
-		mail_message += T("\nThank you.")
+		mail_message = T('There was a problem with your payment!')
+		mail_message += '\n\n'
+		mail_message += T("Something happened and we couldn't verify your payment.")
+		mail_message += '\n'
+		mail_message += T("If you're sure you paid the order, please contact us. Otherwise, try to pay again later.")
+		mail_message += '\n\n'
+		mail_message += T("Thank you.")
 		mail.send(to=pending.order_id.user_id.email,
 				subject=T('Something went wrong!'),
 				message = mail_message
@@ -205,7 +222,11 @@ def success():
 	hack a little bit in order to make the app continuous.
 	"""
 
-	log_in_file(str(request.vars), '/tmp/paypalreturn.txt')
+	if request.is_local:
+		log_in_file(str(request.vars), '/tmp/paypalreturn.txt')
+	else:
+		log_in_file(str(request.vars), '/var/log/paypalreturn.txt')
+
 	pending = Pending(id=session.pending)
 	if request.is_local:
 		## do what ipn was supposed to do
@@ -217,10 +238,13 @@ def success():
 									)
 		pending.update_record(confirmed=True)
 		Order(id=pending.order_id).update_record(status=2)
-		mail_message = T('We just confirmed your payment for order number %s.\n' % pending.order_id.token)
-		mail_message += T('The total amount was R$%.2f.\n' % pending.order_id.amount)
-		mail_message += T('You can check your payment history after login in to your profile.\n')
-		mail_message += T('\nThank you!')
+		mail_message = T('We just confirmed your payment for order number %s.') % pending.order_id.token
+		mail_message += '\n'
+		mail_message += T('The total amount was R$%.2f.') % pending.order_id.amount
+		mail_message += '\n'
+		mail_message += T('You can check your payment history after login in to your profile.')
+		mail_message += '\n\n'
+		mail_message += T('Thank you!')
 		mail.send(to=pending.order_id.user_id.email,
 				subject=T("Payment confirmed!"),
 				message = mail_message

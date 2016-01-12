@@ -109,7 +109,7 @@ Order.order_date.requires = IS_DATETIME()
 Order.products.requires = IS_IN_DB(db, 'classes.id', multiple=True)
 Order.status.requires = IS_IN_SET(order_status)
 Order.amount.compute = lambda row: total_amount(row)
-Order.token.compute = lambda row: generate_token()
+Order.token.default = generate_token()
 Order.status.default = 1
 
 ## pending transactions table
